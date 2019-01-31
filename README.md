@@ -1,7 +1,7 @@
 # Identity Service
-An Identity-As-A-Service microservices component written from scratch in .Net Core using a CQRS architecture with a CosmosDB persistence layer.
+Identity-As-A-Service written from scratch in .Net Core using a CQRS architecture with a CosmosDB/Redis persistence layer and RSA signed JWT Tokens with public key distribution for authentication and claims.
 
-#Architecture
+# Architecture
 ![Architecture](https://github.com/INNVTV/Identity-Service/blob/master/_docs/imgs/architecture.png)
 
 ## Features
@@ -9,9 +9,9 @@ An Identity-As-A-Service microservices component written from scratch in .Net Co
  * JWT token authentication w/ RSA Public/Private key pairs
  * CQRS Architecture using MediatR, FluentValidation and Custom Middleware
  * CosmosDB/Redis Persistence Layer
- * User/Role Management
+ * User/Role/Invitations Management
  * Private gRPC Endpoints
- * OpenAPI Endpoints w/ Swagger
+ * OpenAPI Endpoints w/ SwaggerUI
  * Well known endpoints for public key distribution
  * Redis caching to allow for multiple instances
  * Max Attempt Lockouts
@@ -20,27 +20,15 @@ An Identity-As-A-Service microservices component written from scratch in .Net Co
  * Easy to refactor to your needs
 
 
- using RS256 signed JWT Tokens for authentication and authorization claims.
-Built from scratch for microservice deployments in the cloud.
-Designed to work with CosmosDB and can be easiliy refactored to work on any cloud servcie provider and any JSON based document data store.
-
-
-
-# Notes
-
 ## Users, Roles and Authorization API Endpoints
 The UsersController, RolesController and AuthoriationControllers contain endpoints that should only be used for debugging and development purposes. A production instance of Identty Services shoul comment out these endpoints and rely on the secure gRPC endpoints to accept commands and queries from associated microservices within the same application space.
 
 The only public endpoints should be the Authentication endpoint.
 
 
-# Architecture 
+# Architecture Notes
 The architecture is based off of the [.Net Core Cleal Architecture](https://github.com/INNVTV/NetCore-Clean-Architecture) project. This means there is a strong CQRS pattern in place using MediatR.
 
-I also borrow heavily from the [Identity Server](https://identityserver.io/) project with the addition of a much more flexible microservices approach using the CQRS pattern and allowing for multi-accounts per identity as well as multi-tenant SaaS capabilities with a JSON based document store.
-
-# Archtecture
-Roles, Users
 
 ## OpenAPI/Swagger
 OpenAPI endpoints are used for authetication, sharing of the RSA public key and data such as list of roles.
@@ -69,27 +57,18 @@ Utilities/Cryptography/RSAKeyGeneration
 The default scenario uses email/password for login lookups. You can switch to AccountName/password or Username/password scenarios - however this will require only allowing a single email per account/username.
 
 ### Roles
-xxx
+TBD
 
 # Authentication
-xxx
+TBD
 
 # Authorization
-xxx
+TBD
 
 # Security
-xxx
+TBD
 
 ### JSON Web Tokens (JWT)
-[JSON Web Tokens](https://jwt.io/)
-xxx
+For more on [JSON Web Tokens](https://jwt.io/) visit the project site.
 
-### RSA Lookup
-xxx
-
-### Certificate Authority
-xxx
-
-# Service Communications
-xxx
 
