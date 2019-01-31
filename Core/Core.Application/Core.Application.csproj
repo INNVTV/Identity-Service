@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Accounts\**" />
+    <Compile Remove="Users\Commands\AuthenticateUser\**" />
+    <Compile Remove="Users\Queries\GetUsersForAccount\**" />
+    <EmbeddedResource Remove="Accounts\**" />
+    <EmbeddedResource Remove="Users\Commands\AuthenticateUser\**" />
+    <EmbeddedResource Remove="Users\Queries\GetUsersForAccount\**" />
+    <None Remove="Accounts\**" />
+    <None Remove="Users\Commands\AuthenticateUser\**" />
+    <None Remove="Users\Queries\GetUsersForAccount\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.1.2" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Common\Core.Common.csproj" />
+    <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\Core.Infrastructure\Core.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.identitymodel.tokens\5.3.0\lib\netstandard2.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\system.identitymodel.tokens.jwt\5.3.0\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Authentication\Models\" />
+    <Folder Include="Authorization\Queries\UserRolesQuery\" />
+    <Folder Include="Authorization\Queries\UserIsInRoleQuery\" />
+    <Folder Include="Invitations\" />
+  </ItemGroup>
+
+</Project>

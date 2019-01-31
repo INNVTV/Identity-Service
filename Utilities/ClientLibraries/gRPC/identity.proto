@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+// (Optional) Namespace definition
+option csharp_namespace = "Shared.GrpcClientLibrary";
+
+// The platform service definition
+service IdentityRemoteServices{
+	rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+}
+
+
+// The request message containing CreateUser details
+message CreateUserRequest {
+	string name = 1;
+	string firstName = 2;
+	string lastName = 3;
+	string email = 4;
+}
+
+
+// The response message containing results of the CreateAccount command
+message CreateUserResponse {
+	bool isSuccess = 1;
+	string message = 2;
+}

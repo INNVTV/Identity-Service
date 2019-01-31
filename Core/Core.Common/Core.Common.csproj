@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.0.519" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.cryptography.keyderivation\2.2.0\lib\netcoreapp2.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,2 @@
+﻿# Deleting Roles
+If implementing a role deletion scenario ensure that the role is not currently in use by querying for the role occurance in any "Roles" array for user objects. You will also need to make sure that it is not a default role.
