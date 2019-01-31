@@ -13,8 +13,9 @@ Identity-As-A-Service written from scratch in .Net Core using a CQRS architectur
  * Private gRPC Endpoints
  * OpenAPI Endpoints w/ SwaggerUI
  * Well known endpoints for public key distribution
- * Redis caching to allow for multiple instances
- * Max Attempt Lockouts
+ * Redis caching
+ * Serilog for structured logging
+ * Max Attempt Lockouts, Invitations, Erc...
  * Tracking of login attempts, last logins, etc...
  * UserName or Email logins
  * Easy to refactor to your needs
