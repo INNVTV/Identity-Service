@@ -54,7 +54,7 @@ namespace Core.Application.Roles.Queries.GetRoles
             // Generate FeedOptions/ParitionKey
             var feedOptions = new FeedOptions
             {
-                PartitionKey = new PartitionKey(Common.Constants.DocumentType.PlatformRole())
+                PartitionKey = new PartitionKey(Common.Constants.DocumentType.Role())
             };
 
             // Run query against the document store

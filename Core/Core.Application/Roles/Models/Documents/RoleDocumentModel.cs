@@ -10,7 +10,7 @@ namespace Core.Application.Roles.Models.Documents
         public RoleDocumentModel(string name, string description)
         {
             // Set our document partitioning property
-            DocumentType = Common.Constants.DocumentType.PlatformRole();
+            DocumentType = Common.Constants.DocumentType.Role();
 
             //Create our Id
             Id = Guid.NewGuid().ToString();

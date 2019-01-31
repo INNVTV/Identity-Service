@@ -10,7 +10,7 @@ namespace Core.Application.Users.Models.Documents
         public UserDocumentModel(string firstName, string lastName, string userName, string email, List<string> roles, string passwordSalt, string passwordHash)
         {
             // Set our document partitioning property
-            DocumentType = Common.Constants.DocumentType.PlatformUser();
+            DocumentType = Common.Constants.DocumentType.User();
 
             //Create our Id
             Id = Guid.NewGuid().ToString();

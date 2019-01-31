@@ -67,7 +67,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
             // Generate FeedOptions/ParitionKey
             var feedOptions = new FeedOptions
             {
-                PartitionKey = new PartitionKey(Common.Constants.DocumentType.PlatformUser())
+                PartitionKey = new PartitionKey(Common.Constants.DocumentType.User())
             };
 
             // Run query against the document store
@@ -124,7 +124,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
                 result = await _documentContext.Client.ReplaceDocumentAsync(
                     documentUri,
                     userDocumentModel,
-                    new RequestOptions { PartitionKey = new PartitionKey(Common.Constants.DocumentType.PlatformUser().ToString()) }
+                    new RequestOptions { PartitionKey = new PartitionKey(Common.Constants.DocumentType.User().ToString()) }
                 );
             }
             catch (Exception ex)

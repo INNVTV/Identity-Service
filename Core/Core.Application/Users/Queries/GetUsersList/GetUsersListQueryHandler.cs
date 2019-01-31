@@ -63,7 +63,7 @@ namespace Core.Application.Users.Queries.GetUsersList
             // Generate FeedOptions/ParitionKey
             var feedOptions = new FeedOptions
             {
-                PartitionKey = new PartitionKey(Common.Constants.DocumentType.PlatformUser()),
+                PartitionKey = new PartitionKey(Common.Constants.DocumentType.User()),
                 MaxItemCount = request.PageSize, //<-- This is the page size
                 RequestContinuation = request.ContinuationToken
             };

@@ -14,24 +14,24 @@ namespace Core.Common.Constants
     {
         // Account Documents --------------
 
-        public static string Platform()
+        public static string Identity()
         {
-            return "Platform";
+            return "Identity";
         }
 
 
         // User Documents ----------------
 
-        public static string PlatformUser()
+        public static string User()
         {
-            return "Platform_User";
+            return "User";
         }
 
         // Role Documents ----------------
 
-        public static string PlatformRole()
+        public static string Role()
         {
-            return "Platform_Role";
+            return "Role";
         }
     }
 }

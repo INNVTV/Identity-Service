@@ -53,7 +53,7 @@ namespace Core.Application.Users.Queries.GetUserByEmail
             // Generate FeedOptions/ParitionKey
             var feedOptions = new FeedOptions
             {
-                PartitionKey = new PartitionKey(Common.Constants.DocumentType.PlatformUser())
+                PartitionKey = new PartitionKey(Common.Constants.DocumentType.User())
             };
 
             // Run query against the document store
