@@ -239,6 +239,7 @@ namespace IdentityService
             #endregion
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
