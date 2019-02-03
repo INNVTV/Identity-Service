@@ -100,7 +100,7 @@ namespace Core.Application.Invitations.Commands.InviteUser
                     //ToName = String.Concat(""),
                     Subject = String.Concat("Invitation to ", _coreConfiguration.Application.Name),
                     TextContent = String.Concat("You have been invited to ", _coreConfiguration.Application.Name, ". Please accept your invite and create your identity by following the instructions at this link: ", invitationLink),
-                    HtmlContent = String.Concat("You have been invited to ", _coreConfiguration.Application.Name, "</br> Please accept your invite and create your identity by following the instructions <a href='", invitationLink, "'>here</a>"),
+                    HtmlContent = String.Concat("You have been invited to ", _coreConfiguration.Application.Name, ".</br></br> Please accept your invite and create your identity by following the instructions <a href='", invitationLink, "'>here</a>"),
                 };
 
                 try
