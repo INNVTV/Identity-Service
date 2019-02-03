@@ -1,8 +1,26 @@
-﻿@page
+﻿@page "{id}"
 @model IdentityService.Pages.InvitationModel
 @{
     ViewData["Title"] = "Invitation";
 }
 
 <h1>Invitation</h1>
-
+<p><b>Id:</b>@Model.Id</p>
+@if (Model.Invitation != null)
+{
+    <p><b>Expired:</b> @Model.Invitation.Expired</p>
+    <p><b>Email:</b> @Model.Invitation.Email</p>
+}
+<hr />
+@if (Model.Invitation == null)
+{
+    <p>Not found</p>
+}
+else if (Model.Invitation.Expired)
+{
+    <p>Expired</p>
+}
+else if (!Model.Invitation.Expired)
+{
+    <p>OK</p>
+}
