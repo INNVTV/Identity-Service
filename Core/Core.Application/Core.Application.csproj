@@ -46,7 +46,7 @@
     <Folder Include="Authentication\Models\" />
     <Folder Include="Authorization\Queries\UserRolesQuery\" />
     <Folder Include="Authorization\Queries\UserIsInRoleQuery\" />
-    <Folder Include="Invitations\" />
+    <Folder Include="Invitations\Queries\" />
   </ItemGroup>
 
 </Project>

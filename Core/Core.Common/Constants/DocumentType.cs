@@ -33,5 +33,12 @@ namespace Core.Common.Constants
         {
             return "Role";
         }
+
+        // Invitation Documents ----------------
+
+        public static string Invitation()
+        {
+            return "Invitation";
+        }
     }
 }
