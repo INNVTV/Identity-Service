@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/invitations")]
     [ApiController]
     public class InvitationsController : ControllerBase
     {
