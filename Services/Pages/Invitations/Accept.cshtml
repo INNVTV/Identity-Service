@@ -8,7 +8,7 @@
 @if (!Model.AcceptInvitation.InvitationExists)
 {
     <!-- Invitation not found -->
-    <div class="alert alert-info">Invitation not found.</div>
+    <div class="alert alert-danger">Invitation not found.</div>
 }
 else if (Model.AcceptInvitation.InvitationExpired)
 {
@@ -55,7 +55,7 @@ else
 
                 @if (!ModelState.IsValid && ModelState["FirstName"] != null)
                 {
-                    <input class="form-control border-danger" asp-for="AcceptInvitation.FirstName" />
+                    <input class="form-control border-danger" asp-for="AcceptInvitation.FirstName"  placeholder="First Name"/>
                     @foreach (var error in ModelState["FirstName"].Errors)
                     {
                         <span class="text-danger">@error.ErrorMessage</span>
@@ -63,7 +63,7 @@ else
                 }
                 else
                 {
-                    <input class="form-control" asp-for="AcceptInvitation.FirstName" />
+                    <input class="form-control" asp-for="AcceptInvitation.FirstName" placeholder="First Name"/>
                 }
             </div>
 
@@ -71,7 +71,7 @@ else
                 <label style="font-weight:bold" asp-for="AcceptInvitation.LastName" class="control-label"></label>
                 @if (!ModelState.IsValid && ModelState["LastName"] != null)
                 {
-                    <input class="form-control border-danger" asp-for="AcceptInvitation.LastName" />
+                    <input class="form-control border-danger" asp-for="AcceptInvitation.LastName" placeholder="Last Name"/>
                     @foreach (var error in ModelState["LastName"].Errors)
                     {
                         <span class="text-danger">@error.ErrorMessage</span>
@@ -79,7 +79,7 @@ else
                 }
                 else
                 {
-                    <input class="form-control" asp-for="AcceptInvitation.LastName" />
+                    <input class="form-control" asp-for="AcceptInvitation.LastName" placeholder="Last Name"/>
                 }
             </div>
 
@@ -88,7 +88,7 @@ else
 
                 @if (!ModelState.IsValid && ModelState["Password"] != null)
                 {
-                    <input type="password" class="form-control border-danger" asp-for="AcceptInvitation.Password" value="@Model.AcceptInvitation.Password"/>
+                    <input type="password" class="form-control border-danger" asp-for="AcceptInvitation.Password" value="@Model.AcceptInvitation.Password" placeholder="Password"/>
                     @foreach (var error in ModelState["Password"].Errors)
                     {
                         <span class="text-danger">@error.ErrorMessage</span>
@@ -96,7 +96,7 @@ else
                 }
                 else
                 {
-                    <input type="password" class="form-control" asp-for="AcceptInvitation.Password" value="@Model.AcceptInvitation.Password" />
+                    <input type="password" class="form-control" asp-for="AcceptInvitation.Password" value="@Model.AcceptInvitation.Password" placeholder="Password"/>
                 }
             </div>
 
@@ -104,7 +104,7 @@ else
                 <label style="font-weight:bold" asp-for="AcceptInvitation.ConfirmPassword" class="control-label"></label>
                 @if (!ModelState.IsValid && ModelState["ConfirmPassword"] != null)
                 {
-                    <input type="password" class="form-control border-danger" asp-for="@Model.AcceptInvitation.ConfirmPassword" value="@Model.AcceptInvitation.ConfirmPassword" />
+                    <input type="password" class="form-control border-danger" asp-for="@Model.AcceptInvitation.ConfirmPassword" value="@Model.AcceptInvitation.ConfirmPassword" placeholder="Confirm Password"/>
                     foreach (var error in ModelState["ConfirmPassword"].Errors)
                     {
                         <span class="text-danger">@error.ErrorMessage</span>
@@ -112,7 +112,7 @@ else
                 }
                 else
                 {
-                    <input type="password" class="form-control" asp-for="@Model.AcceptInvitation.ConfirmPassword" value="@Model.AcceptInvitation.ConfirmPassword"/>
+                    <input type="password" class="form-control" asp-for="@Model.AcceptInvitation.ConfirmPassword" value="@Model.AcceptInvitation.ConfirmPassword" placeholder="Confirm Password"/>
                 }
             </div>
 
