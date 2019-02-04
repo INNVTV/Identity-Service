@@ -96,7 +96,7 @@ namespace Core.Application.Invitations.Queries.GetInvitationById
 
                 if (invitation.DaysSinceCreated >= _coreConfiguration.Invitations.ExpirationDays)
                 {
-                    invitation.Expired = true;
+                    invitation.IsExpired = true;
                 }
             }
 

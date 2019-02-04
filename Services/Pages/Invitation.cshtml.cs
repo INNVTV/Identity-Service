@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Application.Invitations.Queries.GetInvitationById;
+using Core.Application.Users.Commands.CreateUser;
 using Core.Infrastructure.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +17,15 @@ namespace IdentityService.Pages
 
         [BindProperty]
         public string Id { get; set; }
+
         [BindProperty]
         public Core.Domain.Entities.Invitation Invitation { get; set; }
+
+        [BindProperty]
+        public CreateUserCommand CreateUserCommandForm { get; set; }
+
+        [BindProperty]
+        public CreateUserCommandResponse CreateUserFormResponse { get; set; }
 
         readonly IMediator _mediator;
 
@@ -33,12 +41,16 @@ namespace IdentityService.Pages
             try
             {
                 Invitation = await _mediator.Send(new GetInvitationByIdQuery { Id = id });
-                var invitation = Invitation;
             }
             catch
             {
 
             }
+        }
+
+        public async Task OnPost()
+        {
+            CreateUserFormResponse = await _mediator.Send(CreateUserCommandForm);         
         }
     }
 }
