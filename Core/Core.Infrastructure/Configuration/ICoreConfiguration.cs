@@ -70,7 +70,6 @@ namespace Core.Infrastructure.Configuration
     public class LoginSettings
     {
         public int MaxAttemptsBeforeLockout { get; set; }
-        public int AttemptsResetHours { get; set; }
         public int LockoutTimespanHours { get; set; }
     }
 
