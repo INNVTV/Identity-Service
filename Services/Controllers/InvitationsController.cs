@@ -39,16 +39,9 @@ namespace IdentityService.Controllers
         [HttpGet]
         public async Task<ExpiredInvitationsModel> List(int pageSize = 20, string continuationToken = null)
         {
-            // We don't use the GetUserListQuery in the controller method otherwise Swagger tries to use a POST on our GET call
             var expiredInvitationsQuery = new GetExpiredInvitationsQuery { PageSize = pageSize, ContinuationToken = continuationToken };
             var result = await _mediator.Send(expiredInvitationsQuery);
             return result;
-
-            //-----------------------------------------------------
-            // TODO: DocumentDB will soon have skip/take
-            // For now we use continuation token to get next batch from list
-            // For even more robust query capabilities you should use the 'search' route
-            //-----------------------------------------------------
         }
     }
 }
