@@ -38,7 +38,7 @@ namespace IdentityService.Pages.Login
                 return Page();
             }
 
-            return Redirect(Request.Query["url"]);
+            return Redirect(Request.Query["redirect"]);
 
         }
     }

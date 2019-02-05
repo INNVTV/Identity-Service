@@ -1,0 +1,21 @@
+﻿@page
+@model IdentityService.Pages.Public.KeysModel
+@{
+    ViewData["Public Keys"] = "Accept Invitation";
+}
+
+<h2>Public Keys</h2>
+
+<br />
+
+<div class="form-group container-fluid">
+    <label>RSA XML String</label>
+    <textarea class="form-control" rows="7">@ViewData["XMLString"]</textarea>
+</div>
+
+<br />
+
+<div class="form-group container-fluid">
+    <label>PEM</label>
+    <textarea class="form-control" rows="7">@ViewData["PEM"]</textarea>
+</div>
