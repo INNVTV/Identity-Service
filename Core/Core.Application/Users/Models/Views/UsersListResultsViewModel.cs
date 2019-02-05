@@ -27,6 +27,5 @@ namespace Core.Application.Users.Models.Views
         public int Count;
         public bool HasMoreResults;
         public string ContinuationToken { get; set; } //<-- Use for next call. Null on final
-        public object User { get; internal set; }
     }
 }

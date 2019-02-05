@@ -17,6 +17,8 @@ namespace Core.Infrastructure.Configuration
             Application = new ApplicationSettings();
             Hosting = new HostingConfiguration();
             JSONWebTokens = new JWTConfiguration();
+            Endpoints = new EndpointSettings();
+            Invitations = new InvitationSettings();
             Logins = new LoginSettings(); 
 
             // Map appsettings.json
@@ -26,6 +28,13 @@ namespace Core.Infrastructure.Configuration
             JSONWebTokens.PrivateKeyXmlString = configuration.GetSection("JWT").GetSection("PrivateKeyXmlString").Value;
             JSONWebTokens.PublicKeyXmlString = configuration.GetSection("JWT").GetSection("PublicKeyXmlString").Value;
             JSONWebTokens.PublicKeyPEM = configuration.GetSection("JWT").GetSection("PublicKeyPEM").Value;
+
+            Endpoints.Invitations = configuration.GetSection("Endpoints").GetSection("Invitations").Value;
+            Endpoints.Logins = configuration.GetSection("Endpoints").GetSection("Logins").Value;
+            Endpoints.PasswordReset = configuration.GetSection("Endpoints").GetSection("PasswordReset").Value;
+
+            Invitations.ExpirationDays = Convert.ToInt32(configuration.GetSection("Invitations").GetSection("ExpirationDays").Value);
+
 
             Logins.MaxAttemptsBeforeLockout = Convert.ToInt32(configuration.GetSection("Logins").GetSection("MaxAttemptsBeforeLockout").Value);
             Logins.LockoutTimespanHours = Convert.ToInt32(configuration.GetSection("Logins").GetSection("LockoutTimespanHours").Value);
@@ -52,6 +61,8 @@ namespace Core.Infrastructure.Configuration
         public ApplicationSettings Application { get; set; }
         public HostingConfiguration Hosting { get; set; }
         public JWTConfiguration JSONWebTokens { get; set; }
+        public EndpointSettings Endpoints { get; set; }
+        public InvitationSettings Invitations { get; set; }
         public LoginSettings Logins { get; set; }
     }
 }

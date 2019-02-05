@@ -9,6 +9,10 @@ namespace Core.Infrastructure.Configuration
     {
         ApplicationSettings Application { get; set; }
         JWTConfiguration JSONWebTokens { get; set; }
+
+        EndpointSettings Endpoints { get; set; }
+        InvitationSettings Invitations { get; set; }
+
         LoginSettings Logins { get; set; }
 
         HostingConfiguration Hosting { get; set; }
@@ -38,6 +42,26 @@ namespace Core.Infrastructure.Configuration
         public string PublicKeyPEM { get; set; }
     }
 
+
+    #endregion
+
+    #region Endpoints
+
+    public class EndpointSettings
+    {
+        public string Invitations { get; set; }
+        public string Logins { get; set; }
+        public string PasswordReset { get; set; }
+    }
+
+    #endregion
+
+    #region Invitations
+
+    public class InvitationSettings
+    {
+        public int ExpirationDays { get; set; }
+    }
 
     #endregion
 
