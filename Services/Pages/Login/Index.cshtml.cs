@@ -34,7 +34,7 @@ namespace IdentityService.Pages.Login
 
             if(!result.isSuccess)
             {
-                ViewData["Message"] = "Incorrect credentials";
+                ViewData["Message"] = result.Message;
                 return Page();
             }
 

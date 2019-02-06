@@ -36,9 +36,8 @@ namespace Core.Infrastructure.Configuration
             Invitations.ExpirationDays = Convert.ToInt32(configuration.GetSection("Invitations").GetSection("ExpirationDays").Value);
 
 
-            Logins.MaxAttemptsBeforeLockout = Convert.ToInt32(configuration.GetSection("Logins").GetSection("MaxAttemptsBeforeLockout").Value);
-            Logins.LockoutTimespanHours = Convert.ToInt32(configuration.GetSection("Logins").GetSection("LockoutTimespanHours").Value);
-            Logins.AttemptsResetHours = Convert.ToInt32(configuration.GetSection("Logins").GetSection("AttemptsResetHours").Value);
+            Logins.MaxAttemptsBeforeLockout = Convert.ToInt32(configuration.GetSection("Login").GetSection("MaxAttemptsBeforeLockout").Value);
+            Logins.LockoutTimespanHours = Convert.ToInt32(configuration.GetSection("Login").GetSection("LockoutTimespanHours").Value);
 
             #region Hosting configuration details (if available)
 

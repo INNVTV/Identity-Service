@@ -2,12 +2,14 @@
 using Core.Application.Users.Models.Documents;
 using Core.Infrastructure.Configuration;
 using Core.Infrastructure.Persistence.DocumentDatabase;
+using Core.Infrastructure.Persistence.RedisCache;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,33 +27,54 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
         private readonly IMediator _mediator;
         private readonly ICoreConfiguration _coreConfiguration;
         private readonly IDocumentContext _documentContext;
+        private readonly IRedisContext _redisContext;
 
-        public AuthenticateUserCommandHandler(IMediator mediator, IDocumentContext documentContext, ICoreConfiguration coreConfiguration)
+        public AuthenticateUserCommandHandler(IMediator mediator, IDocumentContext documentContext, IRedisContext redisContext, ICoreConfiguration coreConfiguration)
         {
             _mediator = mediator;
             _coreConfiguration = coreConfiguration;
             _documentContext = documentContext;
+            _redisContext = redisContext;
         }
 
         public async Task<AuthenticateUserCommandResponse> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
         {
-            //Check local cache to see if too many login attempts have occured.
-            #region Check login attempts (Redis Cache)
 
-
-            #endregion 
-
-            //_coreConfiguration.Logins.MaxAttemptsBeforeLockout;
-            //_coreConfiguration.Logins.LockoutTimespanHours;
-            //_coreConfiguration.Logins.AttemptsResetHours;
-
-            AuthenticateUserValidator validator = new AuthenticateUserValidator(); 
+            // Validate our input
+            AuthenticateUserValidator validator = new AuthenticateUserValidator();
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new AuthenticateUserCommandResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new AuthenticateUserCommandResponse(validationResult.Errors) { Message = "Please include both a username/email and a password." };
             }
 
+
+            #region Setup our caching client and keys
+
+            IDatabase cache = _redisContext.ConnectionMultiplexer.GetDatabase();
+            var cacheEntityId = request.UserNameOrEmail.ToString().ToLower().Trim();
+
+            // Attempts ----------
+            var attemptsKey = $"login:attempts:{cacheEntityId}";
+            var attemptsCount = 0;
+
+            #endregion
+
+            #region Check lockouts and login attempts (Redis Cache)
+
+            // Check attempts count on this username/email
+            var attemptsCacheValue = cache.StringGet(attemptsKey);
+
+            if (attemptsCacheValue.HasValue)
+            {
+                attemptsCount = Convert.ToInt32(attemptsCacheValue);
+                if (attemptsCount >= _coreConfiguration.Logins.MaxAttemptsBeforeLockout)
+                {
+                    return new AuthenticateUserCommandResponse { Message = "Too many attempts!" };
+                }
+            }
+
+            #endregion
 
 
             //=========================================================================
@@ -93,7 +116,13 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
             if (userDocumentModel == null)
             {
-                return new AuthenticateUserCommandResponse { Message = "Incorrect login." };
+                #region Update login attempts (Redis Cache)
+
+                cache.StringSet(attemptsKey, (attemptsCount+1), TimeSpan.FromHours(_coreConfiguration.Logins.LockoutTimespanHours), When.Always, CommandFlags.FireAndForget);
+
+                #endregion
+
+                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials." };
             }
 
             #endregion
@@ -105,17 +134,23 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
             if(!authenticationGranted)
             {
-                return new AuthenticateUserCommandResponse { Message = "Incorrect login." };
-                // TODO: Store Login Attempts for the UserNameOrEmail in cache. 
-                #region Update login attempts for lockout (Redis Cache)
+                #region Update login attempts (Redis Cache)
+
+                cache.StringSet(attemptsKey, (attemptsCount+1), TimeSpan.FromHours(_coreConfiguration.Logins.LockoutTimespanHours), When.Always, CommandFlags.FireAndForget);
 
                 #endregion
+
+                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials." };
 
             }
             else
             {
                 #region Clear login attempts (Redis Cache)
 
+                if(attemptsCount > 0)
+                {
+                    cache.KeyDelete(attemptsKey, CommandFlags.FireAndForget);
+                }
 
                 #endregion
 
