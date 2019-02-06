@@ -44,7 +44,7 @@ namespace Core.Application.Invitations.Commands.InviteUser
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
             }
 
 
@@ -135,7 +135,7 @@ namespace Core.Application.Invitations.Commands.InviteUser
                 // 2. SEARCH INDEX: Update Search index or send indexer request.
                 //-----------------------------------------------------------------------
 
-                return new BaseResponse { isSuccess = true, Message = "Invitation sent." };
+                return new BaseResponse { isSuccess = true, Message = "Invitation sent" };
             }
             else
             {

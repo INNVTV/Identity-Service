@@ -1,4 +1,5 @@
-﻿using Core.Application.Users.Models.Documents;
+﻿using Core.Application.Passwords.Queries.GetResetRequest;
+using Core.Application.Users.Models.Documents;
 using Core.Common.Response;
 using Core.Infrastructure.Configuration;
 using Core.Infrastructure.Persistence.DocumentDatabase;
@@ -40,7 +41,16 @@ namespace Core.Application.Passwords.Commands.ResetPassword
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
+            }
+
+            //=========================================================================
+            // VERFIY THE REQUEST CODE IS VALID
+            //=========================================================================
+            var resetRequest = await _mediator.Send(new GetResetRequestQuery { ResetCode = request.ResetCode });
+            if(!resetRequest.IsValid)
+            {
+                return new BaseResponse(validationResult.Errors) { Message = "Reset request is not valid" };
             }
 
 
@@ -94,7 +104,7 @@ namespace Core.Application.Passwords.Commands.ResetPassword
 
             if (userDocumentModel == null)
             {
-                return new BaseResponse { Message = "Could not retrieve user with that Id from the document store." };
+                return new BaseResponse { Message = "Could not retrieve user with that Id from the document store" };
             }
 
 

@@ -10,11 +10,12 @@ namespace IdentityService.ViewModels
     {
         public ResetPasswordViewModel()
         {
-            ResetCodeExists = false;
+            ResetRequestValid = true;
         }
 
-        public bool ResetCodeExists { get; set; }
+        public bool ResetRequestValid { get; set; }
 
+        public string ResetCode { get; set; }
         public string UserId { get; set; }
 
 

@@ -46,7 +46,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
             }
 
             //=========================================================================
@@ -99,7 +99,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
 
             if (userDocumentModel == null)
             {
-                return new BaseResponse { Message = "Could not retrieve user with that Id from the document store." };
+                return new BaseResponse { Message = "Could not retrieve user with that Id from the document store" };
             }
             else
             {
@@ -159,7 +159,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
                 // 2. SEARCH INDEX: Update Search index or send indexer request.
                 //-----------------------------------------------------------------------
 
-                return new BaseResponse { isSuccess = true, Message = "UserName updated." };
+                return new BaseResponse { isSuccess = true, Message = "UserName updated" };
             }
             else
             {

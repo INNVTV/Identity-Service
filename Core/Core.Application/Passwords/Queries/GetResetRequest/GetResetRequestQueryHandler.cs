@@ -47,9 +47,9 @@ namespace Core.Application.Passwords.Queries.GetResetRequest
                     if (resetCodeCacheValue.HasValue)
                     {
                         var userId = resetCodeCacheValue;
-                        var userViewModel = await _mediator.Send(new GetUserByIdQuery { Id = userId });
+                        //var userViewModel = await _mediator.Send(new GetUserByIdQuery { Id = userId });
 
-                        return new ResetRequestModel(request.ResetCode, userViewModel.User);
+                        return new ResetRequestModel(request.ResetCode, userId);
 
                     }
                     else

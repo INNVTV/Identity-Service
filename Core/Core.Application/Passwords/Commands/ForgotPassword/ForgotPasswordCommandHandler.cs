@@ -39,7 +39,7 @@ namespace Core.Application.Passwords.Commands.ForgotPassword
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
             }
 
             // Get user (if exists)

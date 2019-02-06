@@ -11,18 +11,18 @@ namespace Core.Application.Passwords.Models
         {
             IsValid = false;
             ResetCode = null;
-            User = null;
+            UserId = null;
         }
 
-        public ResetRequestModel(string resetCode, User user)
+        public ResetRequestModel(string resetCode, string userId)
         {
             IsValid = true;
             ResetCode = resetCode;
-            User = user;
+            UserId = userId;
         }
 
         public bool IsValid { get; set; }
         public string ResetCode { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
     }
 }

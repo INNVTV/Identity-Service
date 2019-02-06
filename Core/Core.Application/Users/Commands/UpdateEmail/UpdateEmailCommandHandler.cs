@@ -41,7 +41,7 @@ namespace Core.Application.Users.Commands.UpdateEmail
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
             }
 
             //=========================================================================
@@ -94,7 +94,7 @@ namespace Core.Application.Users.Commands.UpdateEmail
 
             if (userDocumentModel == null)
             {
-                return new BaseResponse { Message = "Could not retrieve user with that Id from the document store." };
+                return new BaseResponse { Message = "Could not retrieve user with that Id from the document store" };
             }
             else
             {
@@ -152,7 +152,7 @@ namespace Core.Application.Users.Commands.UpdateEmail
                 // 2. SEARCH INDEX: Update Search index or send indexer request.
                 //-----------------------------------------------------------------------
 
-                return new BaseResponse { isSuccess = true, Message = "Email updated." };
+                return new BaseResponse { isSuccess = true, Message = "Email updated" };
             }
             else
             {
