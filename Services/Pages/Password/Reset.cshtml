@@ -1,0 +1,70 @@
+﻿@page "{resetCode}"
+@model IdentityService.Pages.Password.ResetModel
+@{
+    ViewData["Title"] = "Reset";
+}
+
+
+<div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
+    <h2>Reset Password</h2>
+    @if (!Model.ResetPassword.ResetRequestValid)
+    {
+        <!-- request not valid -->
+        <div class="alert alert-danger" style="margin-top:20px;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i> Reset request is invalid.</div>
+    }
+    else
+    {
+        <p>Please fill out the form below to reset your password</p>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" />
+        <div class="form-group">
+            <form method="post">
+
+                <!--Hidden fields-->
+                <input type="hidden" asp-for="ResetPassword.ResetRequestValid" />
+                <input type="hidden" asp-for="ResetPassword.UserId" />
+                <input type="hidden" asp-for="ResetPassword.ResetCode" />
+
+
+                <div class="form-group">
+                    <label style="font-weight:bold" asp-for="ResetPassword.NewPassword" class="control-label"></label>
+
+                    @if (!ModelState.IsValid && ModelState["NewPassword"] != null)
+                    {
+                        <input type="password" class="form-control border-danger" style="background-color:#ffed81" asp-for="ResetPassword.NewPassword" value="@Model.ResetPassword.NewPassword" placeholder="New Password" />
+                        @foreach (var error in ModelState["NewPassword"].Errors)
+                        {
+                            <span class="text-danger">@error.ErrorMessage</span>
+                        }
+                    }
+                    else
+                    {
+                        <input type="password" class="form-control" asp-for="ResetPassword.NewPassword" value="@Model.ResetPassword.NewPassword" placeholder="New Password" />
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight:bold" asp-for="ResetPassword.ConfirmNewPassword" class="control-label"></label>
+                    @if (!ModelState.IsValid && ModelState["ConfirmNewPassword"] != null)
+                    {
+                        <input type="password" class="form-control border-danger" style="background-color:#ffed81" asp-for="@Model.ResetPassword.ConfirmNewPassword" value="@Model.ResetPassword.ConfirmNewPassword" placeholder="Confirm New Password" />
+                        foreach (var error in ModelState["ConfirmNewPassword"].Errors)
+                        {
+                            <span class="text-danger">@error.ErrorMessage</span>
+                        }
+                    }
+                    else
+                    {
+                        <input type="password" class="form-control" asp-for="@Model.ResetPassword.ConfirmNewPassword" value="@Model.ResetPassword.ConfirmNewPassword" placeholder="Confirm New Password" />
+                    }
+                </div>
+
+                <div class="form-group" style="text-align:right">
+                    <button class="btn btn-primary btn-lg">Reset Password</button>
+                </div>
+
+            </form>
+        </div>
+    }
+
+</div>

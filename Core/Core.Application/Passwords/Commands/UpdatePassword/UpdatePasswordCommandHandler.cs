@@ -1,9 +1,7 @@
-﻿using Core.Application.Users.Commands.CreateUser;
-using Core.Application.Users.Models.Documents;
+﻿using Core.Application.Users.Models.Documents;
 using Core.Common.Response;
 using Core.Infrastructure.Configuration;
 using Core.Infrastructure.Persistence.DocumentDatabase;
-using Core.Infrastructure.Services.Email;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Azure.Documents;
@@ -16,33 +14,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Core.Application.Users.Commands.UpdateEmail
+namespace Core.Application.Passwords.Commands.UpdatePassword
 {
-    public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand, BaseResponse>
+    public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, BaseResponse>
     {
-        //MediatR will automatically inject dependencies
         private readonly IMediator _mediator;
         private readonly ICoreConfiguration _coreConfiguration;
         private readonly IDocumentContext _documentContext;
-        private readonly IEmailService _emailService;
 
-        public UpdateEmailCommandHandler(IMediator mediator, IDocumentContext documentContext, ICoreConfiguration coreConfiguration, IEmailService emailService)
+
+        public UpdatePasswordCommandHandler(IMediator mediator, ICoreConfiguration coreConfiguration, IDocumentContext documentContext)
         {
             _mediator = mediator;
             _coreConfiguration = coreConfiguration;
             _documentContext = documentContext;
-            _emailService = emailService;
         }
 
-        public async Task<BaseResponse> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
         {
-
-            UpdateEmailValidator validator = new UpdateEmailValidator(_mediator); //, _coreConfiguration);
+            UpdatePasswordValidator validator = new UpdatePasswordValidator();
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
                 return new BaseResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
             }
+
 
             //=========================================================================
             // GET the USER DOCUMENT MODEL
@@ -50,12 +46,12 @@ namespace Core.Application.Users.Commands.UpdateEmail
 
             // Generate collection uri
             Uri collectionUri = UriFactory.CreateDocumentCollectionUri(
-                _documentContext.Settings.Database, 
+                _documentContext.Settings.Database,
                 _documentContext.Settings.Collection);
 
 
             // Create the query
-            string sqlQuery = "SELECT * FROM Documents d WHERE d.id ='" + request.id + "'";
+            string sqlQuery = "SELECT * FROM Documents d WHERE d.id ='" + request.UserId + "'";
 
             var sqlSpec = new SqlQuerySpec { QueryText = sqlQuery };
 
@@ -87,22 +83,36 @@ namespace Core.Application.Users.Commands.UpdateEmail
                 throw new Exception("An error occured trying to use the document store", ex);
             }
 
+
+
             //=========================================================================
             // UPDATE the USER DOCUMENT MODEL
             //=========================================================================
-            var oldEmail = String.Empty; // For logging
+
 
             if (userDocumentModel == null)
             {
                 return new BaseResponse { Message = "Could not retrieve user with that Id from the document store" };
             }
-            else
+
+            //=========================================================================
+            // DETERMINE IF THE PASSWORD IS CORRECT
+            //=========================================================================
+            var authenticationGranted = Common.Hashing.PasswordHashing.ValidatePassword(request.OldPassword, userDocumentModel.PasswordHash, userDocumentModel.PasswordSalt);
+
+            if(!authenticationGranted)
             {
-                oldEmail = userDocumentModel.Email;
-                userDocumentModel.Email = request.NewEmail.ToLower().Trim();
+                return new BaseResponse { Message = "Incorrect password" };
             }
 
-            
+
+            // Generate salt and hash from new password
+            var passwordHashResults = Common.Hashing.PasswordHashing.HashPassword(request.NewPassword);
+
+            userDocumentModel.PasswordSalt = passwordHashResults.Salt;
+            userDocumentModel.PasswordHash = passwordHashResults.Hash;
+
+
             var documentUri = UriFactory.CreateDocumentUri(
                 _documentContext.Settings.Database,
                 _documentContext.Settings.Collection,
@@ -142,7 +152,7 @@ namespace Core.Application.Users.Commands.UpdateEmail
                 // LOG ACTIVITY
                 //=========================================================================
                 var user = AutoMapper.Mapper.Map<Core.Domain.Entities.User>(userDocumentModel);
-                Log.Information("Email updated from {oldEmail} to {newName} {@user}", oldEmail, request.NewEmail, user);
+                Log.Information("Password updated {@user}", user);
 
 
                 //==========================================================================
@@ -152,12 +162,15 @@ namespace Core.Application.Users.Commands.UpdateEmail
                 // 2. SEARCH INDEX: Update Search index or send indexer request.
                 //-----------------------------------------------------------------------
 
-                return new BaseResponse { isSuccess = true, Message = "Email updated" };
+
+                // Return Response
+                return new BaseResponse { isSuccess = true, Message = "Password updated" };
             }
             else
             {
                 return new BaseResponse { Message = "Could not save model to document store. Status code: " + result.StatusCode };
             }
+
         }
     }
 }

@@ -45,17 +45,14 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new AuthenticateUserCommandResponse(validationResult.Errors) { Message = "Please include both a username/email and a password." };
+                return new AuthenticateUserCommandResponse(validationResult.Errors) { Message = "Please include both a username/email and a password" };
             }
 
 
-            #region Setup our caching client and keys
+            #region Setup our caching client and key
 
             IDatabase cache = _redisContext.ConnectionMultiplexer.GetDatabase();
-            var cacheEntityId = request.UserNameOrEmail.ToString().ToLower().Trim();
-
-            // Attempts ----------
-            var attemptsKey = $"login:attempts:{cacheEntityId}";
+            var attemptsKey = Common.Constants.CachingKeys.LoginAttempts(request.UserNameOrEmail);
             var attemptsCount = 0;
 
             #endregion
@@ -122,7 +119,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
                 #endregion
 
-                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials." };
+                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials" };
             }
 
             #endregion
@@ -140,7 +137,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
                 #endregion
 
-                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials." };
+                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials" };
 
             }
             else

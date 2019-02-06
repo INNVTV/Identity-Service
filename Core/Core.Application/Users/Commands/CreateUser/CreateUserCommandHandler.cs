@@ -43,7 +43,7 @@ namespace Core.Application.Users.Commands.CreateUser
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new CreateUserCommandResponse(validationResult.Errors) { Message = "One or more validation errors occurred." };
+                return new CreateUserCommandResponse(validationResult.Errors) { Message = "One or more validation errors occurred" };
             }
 
 
@@ -152,7 +152,7 @@ namespace Core.Application.Users.Commands.CreateUser
                 // 2. SEARCH INDEX: Update Search index or send indexer request.
                 //-----------------------------------------------------------------------
 
-                return new CreateUserCommandResponse { isSuccess = true, User = user, Message = "User created." };
+                return new CreateUserCommandResponse { isSuccess = true, User = user, Message = "User created" };
             }
             else
             {

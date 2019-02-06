@@ -71,6 +71,7 @@ namespace Core.Infrastructure.Configuration
     {
         public int MaxAttemptsBeforeLockout { get; set; }
         public int LockoutTimespanHours { get; set; }
+        public int PasswordResetTimespanHours { get; set; }
     }
 
     #endregion

@@ -38,6 +38,7 @@ namespace Core.Infrastructure.Configuration
 
             Logins.MaxAttemptsBeforeLockout = Convert.ToInt32(configuration.GetSection("Login").GetSection("MaxAttemptsBeforeLockout").Value);
             Logins.LockoutTimespanHours = Convert.ToInt32(configuration.GetSection("Login").GetSection("LockoutTimespanHours").Value);
+            Logins.PasswordResetTimespanHours = Convert.ToInt32(configuration.GetSection("Login").GetSection("PasswordResetTimespanHours").Value);
 
             #region Hosting configuration details (if available)
 

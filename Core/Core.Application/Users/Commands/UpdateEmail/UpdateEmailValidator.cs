@@ -24,12 +24,7 @@ namespace Core.Application.Users.Commands.UpdateEmail
 
 
             // NewUserName
-            RuleFor(x => x.NewEmail).NotEmpty().WithMessage("Please include a UserName");
-
-            RuleFor(x => x.NewEmail)
-                .Length(Common.Constants.Users.minUserNameLength, Common.Constants.Users.maxUserNameLength)
-                .When(x => !String.IsNullOrEmpty(x.NewEmail))
-                .WithMessage($"UserName must be bewtween {Common.Constants.Users.minUserNameLength}-{Common.Constants.Users.maxUserNameLength} characters in length");
+            RuleFor(x => x.NewEmail).NotEmpty().WithMessage("Please include a new email address");
 
             RuleFor(x => x.NewEmail)
                 .EmailAddress()
