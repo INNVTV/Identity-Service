@@ -19,11 +19,10 @@ using Core.Application.Users.Queries.SearchUsers;
 using Core.Application.Users.Commands.DeleteUser;
 using Core.Application.Users.Commands.UpdateUserName;
 using Core.Application.Users.Commands.UpdateEmail;
-using Core.Application.Users.Commands.UpdatePassword;
 using Core.Application.Users.Commands.AddToRole;
 using Core.Application.Users.Commands.RemoveFromRole;
 using Core.Application.Users.Queries.GetUserById;
-using Core.Application.Users.Commands.ResetPassword;
+using Core.Application.Passwords.Commands.UpdatePassword;
 
 namespace IdentityService.Controllers
 {
@@ -128,14 +127,6 @@ namespace IdentityService.Controllers
         public async Task<BaseResponse> UpdatePassword(UpdatePasswordCommand updatePasswordCommand)
         {
             var result = await _mediator.Send(updatePasswordCommand);
-            return result;
-        }
-
-        [Route("reset/password")]
-        [HttpPut]
-        public async Task<BaseResponse> ResetPassword(ResetPasswordCommand resetPasswordCommand)
-        {
-            var result = await _mediator.Send(resetPasswordCommand);
             return result;
         }
 

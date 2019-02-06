@@ -6,7 +6,15 @@
 
 <div class="form-group col-xl-6 offset-xl-3 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
     <h2>Reset your password</h2>
-    <p>Submit your username or email address and we'll send you a link to reset your password.</p>
+    @if (String.IsNullOrEmpty(ViewData["Message"].ToString()))
+    {
+        <p>Submit your username or email address and we'll send you a link to reset your password.</p>
+    }
+    else
+    {
+        <div class="alert alert-danger" style="margin-top:20px;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i> @ViewData["Message"]</div>
+    }
+
     <form method="post">
         <div class="form-group">
             <input class="form-control" type="text" asp-for="@Model.UserNameOrEmail" />

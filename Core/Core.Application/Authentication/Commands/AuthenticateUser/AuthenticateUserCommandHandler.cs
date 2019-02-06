@@ -49,13 +49,10 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
             }
 
 
-            #region Setup our caching client and keys
+            #region Setup our caching client and key
 
             IDatabase cache = _redisContext.ConnectionMultiplexer.GetDatabase();
-            var cacheEntityId = request.UserNameOrEmail.ToString().ToLower().Trim();
-
-            // Attempts ----------
-            var attemptsKey = $"login:attempts:{cacheEntityId}";
+            var attemptsKey = Common.Constants.CachingKeys.LoginAttempts(request.UserNameOrEmail);
             var attemptsCount = 0;
 
             #endregion
