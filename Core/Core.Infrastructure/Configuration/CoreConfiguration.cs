@@ -29,9 +29,7 @@ namespace Core.Infrastructure.Configuration
             JSONWebTokens.PublicKeyXmlString = configuration.GetSection("JWT").GetSection("PublicKeyXmlString").Value;
             JSONWebTokens.PublicKeyPEM = configuration.GetSection("JWT").GetSection("PublicKeyPEM").Value;
 
-            Endpoints.Invitations = configuration.GetSection("Endpoints").GetSection("Invitations").Value;
-            Endpoints.Logins = configuration.GetSection("Endpoints").GetSection("Logins").Value;
-            Endpoints.PasswordReset = configuration.GetSection("Endpoints").GetSection("PasswordReset").Value;
+            Endpoints.Domain = configuration.GetSection("Endpoints").GetSection("Domain").Value;
 
             Invitations.ExpirationDays = Convert.ToInt32(configuration.GetSection("Invitations").GetSection("ExpirationDays").Value);
 

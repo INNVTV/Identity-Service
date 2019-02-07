@@ -49,9 +49,7 @@ namespace Core.Infrastructure.Configuration
 
     public class EndpointSettings
     {
-        public string Invitations { get; set; }
-        public string Logins { get; set; }
-        public string PasswordReset { get; set; }
+        public string Domain { get; set; }
     }
 
     #endregion
