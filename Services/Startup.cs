@@ -31,6 +31,9 @@ using Core.Infrastructure.Middleware.ExceptionHandling;
 using Core.Common.Response;
 using Core.Application.Users.Commands.CreateUser;
 using Core.Application.Users.Commands.UpdateUserName;
+using Core.Application.Invitations.Commands.InviteUser;
+using Core.Application.Users.Models.Views;
+using Core.Application.Users.Queries.GetUsersList;
 
 namespace IdentityService
 {
@@ -137,7 +140,7 @@ namespace IdentityService
 
 
 
-            #region Configure AutoMapper (Instance Version) for ServiceModels
+            #region Configure AutoMapper (Instance Version) for ServiceModels and gRPC Remote Services
 
             /*----------------------------------------
              * AutoMapper is also configured using the Static API within our Core library.
@@ -151,9 +154,23 @@ namespace IdentityService
 
                 //Service Models
                 cfg.CreateMap<CreateUserServiceModel, CreateUserCommand>();
-                
 
-                //GrpcProtobuffer Messages:
+
+                // GrpcProtobuffer Messages:
+                // ---------------------------------------
+                // Base response
+                cfg.CreateMap<RemoteServices.Identity.BaseRemoteResponse, BaseResponse>();
+
+                // Invitations
+                cfg.CreateMap<InviteUserCommand, RemoteServices.Identity.InviteUserRequest>();
+
+                // User Listing
+                cfg.CreateMap<GetUsersListQuery, RemoteServices.Identity.GetUserListRequest>();
+                cfg.CreateMap<RemoteServices.Identity.GetUserListResponse, UsersListResultsViewModel>();
+
+                // Roles
+
+
                 /*
                 cfg.CreateMap<Shared.GrpcClientLibrary.CreateAccountRequest, CreateAccountCommand>();
                 cfg.CreateMap<CreateAccountCommandResponse, Shared.GrpcClientLibrary.CreateAccountResponse>();
@@ -192,7 +209,11 @@ namespace IdentityService
                     options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
             //Start the gRPC Server:
-            GrpcServer.ServerInitializer.Initialize(Int32.Parse(Configuration.GetSection("gRPC").GetSection("Port").Value), services.BuildServiceProvider(), mapper);
+            GrpcServer.ServerInitializer.Initialize(
+                Configuration.GetSection("gRPC").GetSection("Host").Value,
+                Int32.Parse(Configuration.GetSection("gRPC").GetSection("Port").Value),
+                services.BuildServiceProvider(),
+                mapper);
 
             // Initialize Core.Startup
             Core.Startup.Routines.Initialize(services.BuildServiceProvider().GetService<IMediator>());

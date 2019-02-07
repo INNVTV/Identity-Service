@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProtoBuf Include="background.proto" />
     <ProtoBuf Include="identity.proto" />
   </ItemGroup>
 

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using IdentityService.RPC.Services;
+using IdentityService.GrpcServer.Services;
 using Serilog;
-using Shared.GrpcClientLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +10,14 @@ namespace IdentityService.GrpcServer
 {
     public static class ServerInitializer
     {
-        public static void Initialize(int port, IServiceProvider serviceProvider, IMapper mapper)
+        public static void Initialize(string host, int port, IServiceProvider serviceProvider, IMapper mapper)
         {
             var server = new Grpc.Core.Server
             {
                 Services = {
-                    IdentityRemoteServices.BindService(new IdentityServicesImplementation(serviceProvider, mapper)),
-                    BackgroundRemoteServices.BindService(new BackgroundServicesImplementation())
+                    RemoteServices.Identity.Service.BindService (new RemoteIdentityServices(serviceProvider, mapper))
                 },
-                Ports = { new Grpc.Core.ServerPort("localhost", port, Grpc.Core.ServerCredentials.Insecure) }
+                Ports = { new Grpc.Core.ServerPort(host, port, Grpc.Core.ServerCredentials.Insecure) }
             };
 
             server.Start();

@@ -1,25 +1,86 @@
 ﻿syntax = "proto3";
+option csharp_namespace = "RemoteServices.Identity";
 
-// (Optional) Namespace definition
-option csharp_namespace = "Shared.GrpcClientLibrary";
+// ================================================
+//
+//      SERVICE DEFINITIONS
+//
+// ================================================
 
-// The platform service definition
-service IdentityRemoteServices{
-	rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+service Service{
+
+	// ================================================
+	// COMMANDS
+	// ================================================
+
+	rpc InviteUser(InviteUserRequest) returns (BaseRemoteResponse) {}
+	//rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+	//rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
+	// ================================================
+	// QUERIES
+	// ================================================
+
+	rpc GetUserList(GetUserListRequest) returns (GetUserListResponse) {}
 }
 
+// ================================================
+// BASE REMOTE RESPONSE
+// ================================================
 
-// The request message containing CreateUser details
-message CreateUserRequest {
-	string name = 1;
-	string firstName = 2;
-	string lastName = 3;
-	string email = 4;
+message ValidationIssues {
+	string propertyName = 1;
+	repeated string propertyFailures = 2;
 }
-
-
-// The response message containing results of the CreateAccount command
-message CreateUserResponse {
+message BaseRemoteResponse {
 	bool isSuccess = 1;
 	string message = 2;
+	repeated ValidationIssues validationIssues = 3;
+}
+
+
+// ================================================
+// INVITE USERS 
+// ================================================
+
+message InviteUserRequest {
+	string email = 1;
+	repeated string roles = 2;
+}
+
+// ================================================
+// GET USER LIST
+// ================================================
+
+message UserListItem {
+	string id = 1;
+	string userName =2;
+	string nameKey = 3;
+}
+
+message GetUserListRequest {
+	int32 pageSize = 1;
+
+	enum OrderBy {
+		USERNAME = 0;
+        NAMEKEY = 1;
+        CREATEDDATE = 2;
+	}
+
+	enum OrderDirection {
+		ASC = 0;
+        DESC = 1;
+	}
+
+	OrderBy orderBy = 2;
+	OrderDirection orderDirection = 3;
+
+	string continuationToken = 4;
+}
+
+message GetUserListResponse {
+	int32 count = 1;
+	repeated UserListItem users = 2;
+	bool hasMoreResults = 3;
+	string continuationToken = 4;
 }
