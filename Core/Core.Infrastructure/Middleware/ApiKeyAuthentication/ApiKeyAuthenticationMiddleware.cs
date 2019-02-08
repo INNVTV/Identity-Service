@@ -1,5 +1,6 @@
 ﻿using Core.Common.Response;
 using Core.Domain.Entities;
+using Core.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
@@ -13,22 +14,24 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
 {
     public class ApiKeyAuthenticationMiddleware
     {
-        private const string APIKeyToCheck = "k1234567891011121314151617181920";
+        // TODO: Build out tiered api key perission system
+        private string _apiKeyToCheck = string.Empty;
+
         private readonly RequestDelegate next;
 
-        public ApiKeyAuthenticationMiddleware(RequestDelegate next)
+        public ApiKeyAuthenticationMiddleware(RequestDelegate next, ICoreConfiguration coreConfiguraton)
         {
-
             this.next = next;
+            _apiKeyToCheck = coreConfiguraton.Security.ApiKey;
         }
 
         public async Task Invoke(HttpContext context /* other dependencies */)
         {
             bool validKey = false;
-            var apiKeyExists = context.Request.Headers.ContainsKey("APIKey");
+            var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
             if(apiKeyExists)
             {
-                if(context.Request.Headers["APIKey"].Equals(APIKeyToCheck))
+                if(context.Request.Headers["X-API-KEY"].Equals(_apiKeyToCheck))
                 {
                     validKey = true;
                 }
@@ -36,13 +39,13 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
             else
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                await context.Response.WriteAsync("Please add an APIKey to you request header");
+                await context.Response.WriteAsync("Please add an ApiKey to you request header");
             }
 
             if(!validKey)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await context.Response.WriteAsync("Invalid API Key");
+                await context.Response.WriteAsync("Invalid ApiKey");
             }
             else
             {

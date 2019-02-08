@@ -32,18 +32,17 @@ The architecture is based off of the [.Net Core Cleal Architecture](https://gith
 
 
 ## OpenAPI/Swagger
-OpenAPI endpoints are used for authetication, sharing of the RSA public key and data such as list of roles.
+Public OpenAPI endpoints are used for authetication, sharing of the RSA public key and data such as list of roles.
 
-The commented out endpoints for users and roles are there for local debugging and should remain comented out (or removed) in a production enviornment. You should use the gRPC services to allow authenticated services use these methods on behalf of logged in users.
+Secure endpoints are used for coordination between other microservices with your application boundaries.
+
+During refactoring it may ease local debugging/development to remove the security layer from the secure endpoints as long as they are secured before moving to production.
 
 ## gRPC
-gRPC services are used for user and role creation and management.
+gRPC services are partially built out for those that wish to use remote pocedure calls.
 
 ### Shared Client Library
-Shared client library for gRPC services are found in the "XXX" project here: 
-
-#### Building the proto buffers
-[Images]
+Shared client library for OpenAPI/Swagger/gRPC services are found in the "Utilities" folder.
 
 
 # RSA Key Generation
@@ -52,22 +51,6 @@ Utilities/Cryptography/RSAKeyGeneration
 # Public Keys URI
 /api/rsa/public/keys
 
-# Usernames, Identities and Roles
-
-### Login Lookups
-The default scenario uses email/password for login lookups. You can switch to AccountName/password or Username/password scenarios - however this will require only allowing a single email per account/username.
-
-### Roles
-TBD
-
-# Authentication
-TBD
-
-# Authorization
-TBD
-
-# Security
-TBD
 
 ### JSON Web Tokens (JWT)
 For more on [JSON Web Tokens](https://jwt.io/) visit the project site.

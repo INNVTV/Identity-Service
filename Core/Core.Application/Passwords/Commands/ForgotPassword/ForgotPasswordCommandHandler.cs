@@ -69,7 +69,7 @@ namespace Core.Application.Passwords.Commands.ForgotPassword
                     // SEND EMAIL 
                     //=========================================================================
 
-                    var resetLink = String.Concat(_coreConfiguration.Endpoints.PasswordReset, "/", passwordResetCode);
+                    var resetLink = String.Concat(_coreConfiguration.Endpoints.Domain, "/password/reset/", passwordResetCode);
 
                     var emailMessage = new EmailMessage
                     {

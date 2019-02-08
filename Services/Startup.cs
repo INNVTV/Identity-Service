@@ -31,6 +31,10 @@ using Core.Infrastructure.Middleware.ExceptionHandling;
 using Core.Common.Response;
 using Core.Application.Users.Commands.CreateUser;
 using Core.Application.Users.Commands.UpdateUserName;
+using Core.Application.Invitations.Commands.InviteUser;
+using Core.Application.Users.Models.Views;
+using Core.Application.Users.Queries.GetUsersList;
+using Core.Infrastructure.Middleware.ApiKeyAuthentication;
 
 namespace IdentityService
 {
@@ -137,7 +141,7 @@ namespace IdentityService
 
 
 
-            #region Configure AutoMapper (Instance Version) for ServiceModels
+            #region Configure AutoMapper (Instance Version) for ServiceModels and gRPC Remote Services
 
             /*----------------------------------------
              * AutoMapper is also configured using the Static API within our Core library.
@@ -151,18 +155,24 @@ namespace IdentityService
 
                 //Service Models
                 cfg.CreateMap<CreateUserServiceModel, CreateUserCommand>();
-                
 
-                //GrpcProtobuffer Messages:
+
+                // GrpcProtobuffer Messages:
+                // ---------------------------------------
                 /*
-                cfg.CreateMap<Shared.GrpcClientLibrary.CreateAccountRequest, CreateAccountCommand>();
-                cfg.CreateMap<CreateAccountCommandResponse, Shared.GrpcClientLibrary.CreateAccountResponse>();
+               // Base response
+               cfg.CreateMap<RemoteServices.Identity.BaseRemoteResponse, BaseResponse>();
 
-                cfg.CreateMap<Shared.GrpcClientLibrary.CloseAccountRequest, CloseAccountCommand>();
-                cfg.CreateMap<BaseResponse, Shared.GrpcClientLibrary.CloseAccountResponse>();
+               // Invitations
+               cfg.CreateMap<InviteUserCommand, RemoteServices.Identity.InviteUserRequest>();
 
-                cfg.CreateMap<Shared.GrpcClientLibrary.GetAccountListRequest, GetAccountListQuery>();
-                cfg.CreateMap<AccountListViewItem, Shared.GrpcClientLibrary.GetAccountListResponse.Types.Account>();*/
+               // User Listing
+               cfg.CreateMap<GetUsersListQuery, RemoteServices.Identity.GetUserListRequest>();
+               cfg.CreateMap<RemoteServices.Identity.GetUserListResponse, UsersListResultsViewModel>();
+
+               // Roles
+
+               */
             });
 
             var mapper = config.CreateMapper();
@@ -180,7 +190,21 @@ namespace IdentityService
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Identity Service", Version = "v1", Description = "REST API for Identity Service" });
+                c.SwaggerDoc("v1", new Info { Title = "Identity Service", Version = "v1", Description = $"REST API for { coreConfiguration.Application.Name }" });
+
+                
+                // Secure our endpoints with an ApiKey ------------------
+                c.AddSecurityDefinition("ApiKeyAuth", new ApiKeyScheme{
+                    In = "header",
+                    Description = "Authorization by pre-shared API key.",
+                    Name = "X-API-KEY",
+                    Type = "apiKey" });
+
+                c.AddSecurityRequirement(
+                    new Dictionary<string, IEnumerable<string>> {
+                        { "ApiKeyAuth", new string[0] },
+                    });
+
             });
 
             #endregion
@@ -191,8 +215,16 @@ namespace IdentityService
                 .AddJsonOptions(options =>
                     options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
+            
             //Start the gRPC Server:
-            GrpcServer.ServerInitializer.Initialize(Int32.Parse(Configuration.GetSection("gRPC").GetSection("Port").Value), services.BuildServiceProvider(), mapper);
+            /*
+            GrpcServer.ServerInitializer.Initialize(
+                Configuration.GetSection("gRPC").GetSection("Host").Value,
+                Int32.Parse(Configuration.GetSection("gRPC").GetSection("Port").Value),
+                services.BuildServiceProvider(),
+                mapper);
+            */
+
 
             // Initialize Core.Startup
             Core.Startup.Routines.Initialize(services.BuildServiceProvider().GetService<IMediator>());
@@ -226,6 +258,8 @@ namespace IdentityService
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
+            
+
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
@@ -237,6 +271,9 @@ namespace IdentityService
             // The Swagger UI can be found at: http://localhost:<port>/swagger
 
             #endregion
+
+            // API Key Middleware
+            app.UseApiKeyAuthenticationMiddleware();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

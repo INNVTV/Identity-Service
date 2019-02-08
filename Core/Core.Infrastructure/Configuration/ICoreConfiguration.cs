@@ -8,6 +8,7 @@ namespace Core.Infrastructure.Configuration
     public interface ICoreConfiguration
     {
         ApplicationSettings Application { get; set; }
+        SecuritySettings Security { get; set; }
         JWTConfiguration JSONWebTokens { get; set; }
 
         EndpointSettings Endpoints { get; set; }
@@ -31,6 +32,16 @@ namespace Core.Infrastructure.Configuration
 
     #endregion
 
+    #region Security
+
+    public class SecuritySettings
+    {
+        public string ApiKey { get; set; }
+    }
+
+
+    #endregion
+
     #region JSONWebTokens
 
     public class JWTConfiguration
@@ -49,9 +60,7 @@ namespace Core.Infrastructure.Configuration
 
     public class EndpointSettings
     {
-        public string Invitations { get; set; }
-        public string Logins { get; set; }
-        public string PasswordReset { get; set; }
+        public string Domain { get; set; }
     }
 
     #endregion
