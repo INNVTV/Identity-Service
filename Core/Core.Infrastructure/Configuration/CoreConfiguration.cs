@@ -15,6 +15,7 @@ namespace Core.Infrastructure.Configuration
         {
             // New up our root classes
             Application = new ApplicationSettings();
+            Security = new SecuritySettings();
             Hosting = new HostingConfiguration();
             JSONWebTokens = new JWTConfiguration();
             Endpoints = new EndpointSettings();
@@ -23,6 +24,7 @@ namespace Core.Infrastructure.Configuration
 
             // Map appsettings.json
             Application.Name = configuration.GetSection("Application").GetSection("Name").Value;
+            Security.ApiKey = configuration.GetSection("Security").GetSection("ApiKey").Value;
 
             JSONWebTokens.ExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("ExpirationHours").Value);
             JSONWebTokens.PrivateKeyXmlString = configuration.GetSection("JWT").GetSection("PrivateKeyXmlString").Value;
@@ -57,6 +59,7 @@ namespace Core.Infrastructure.Configuration
         }
 
         public ApplicationSettings Application { get; set; }
+        public SecuritySettings Security { get; set; }
         public HostingConfiguration Hosting { get; set; }
         public JWTConfiguration JSONWebTokens { get; set; }
         public EndpointSettings Endpoints { get; set; }

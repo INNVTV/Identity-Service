@@ -1,5 +1,6 @@
 ﻿using Core.Common.Response;
 using Core.Domain.Entities;
+using Core.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
@@ -13,13 +14,15 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
 {
     public class ApiKeyAuthenticationMiddleware
     {
-        private const string ApiKeyToCheck = "k1234567891011121314151617181920";
+        // TODO: Build out tiered api key perission system
+        private string _apiKeyToCheck = string.Empty;
+
         private readonly RequestDelegate next;
 
-        public ApiKeyAuthenticationMiddleware(RequestDelegate next)
+        public ApiKeyAuthenticationMiddleware(RequestDelegate next, ICoreConfiguration coreConfiguraton)
         {
-
             this.next = next;
+            _apiKeyToCheck = coreConfiguraton.Security.ApiKey;
         }
 
         public async Task Invoke(HttpContext context /* other dependencies */)
@@ -28,7 +31,7 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
             var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
             if(apiKeyExists)
             {
-                if(context.Request.Headers["X-API-KEY"].Equals(ApiKeyToCheck))
+                if(context.Request.Headers["X-API-KEY"].Equals(_apiKeyToCheck))
                 {
                     validKey = true;
                 }
