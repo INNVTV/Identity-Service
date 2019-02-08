@@ -12,11 +12,13 @@ namespace Services.IdentityService
     public partial class ApiClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public ApiClient(string baseUrl)
+        public ApiClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -53,7 +55,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/authenticate");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -114,8 +116,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -160,11 +160,13 @@ namespace Services.IdentityService
     public partial class PublicClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public PublicClient(string baseUrl)
+        public PublicClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -201,7 +203,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/rsa/public/keys");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -259,8 +261,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -305,11 +305,13 @@ namespace Services.IdentityService
     public partial class CustodianClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public CustodianClient(string baseUrl)
+        public CustodianClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -346,7 +348,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/custodian/run");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -404,8 +406,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -450,11 +450,13 @@ namespace Services.IdentityService
     public partial class InvitationsClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public InvitationsClient(string baseUrl)
+        public InvitationsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -491,7 +493,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/invitations/invite");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -552,8 +554,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -581,7 +581,7 @@ namespace Services.IdentityService
             }
             urlBuilder_.Length--;
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -639,8 +639,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -685,11 +683,13 @@ namespace Services.IdentityService
     public partial class RolesClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public RolesClient(string baseUrl)
+        public RolesClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -735,7 +735,7 @@ namespace Services.IdentityService
             }
             urlBuilder_.Length--;
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -794,8 +794,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -814,7 +812,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/roles/list");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -872,8 +870,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -892,7 +888,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/roles/add");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -953,8 +949,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -973,7 +967,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/roles/remove");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1034,8 +1028,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1080,11 +1072,13 @@ namespace Services.IdentityService
     public partial class UsersClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UsersClient(string baseUrl)
+        public UsersClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -1121,7 +1115,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/create");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1182,8 +1176,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1219,7 +1211,7 @@ namespace Services.IdentityService
             }
             urlBuilder_.Length--;
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1277,8 +1269,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1318,7 +1308,7 @@ namespace Services.IdentityService
             }
             urlBuilder_.Length--;
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1376,8 +1366,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1400,7 +1388,7 @@ namespace Services.IdentityService
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/username/{username}");
             urlBuilder_.Replace("{username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1458,8 +1446,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1482,7 +1468,7 @@ namespace Services.IdentityService
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/email/{email}");
             urlBuilder_.Replace("{email}", System.Uri.EscapeDataString(ConvertToString(email, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1540,8 +1526,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1564,7 +1548,7 @@ namespace Services.IdentityService
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/id/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1622,8 +1606,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1647,7 +1629,7 @@ namespace Services.IdentityService
             }
             urlBuilder_.Length--;
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1705,8 +1687,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1751,11 +1731,13 @@ namespace Services.IdentityService
     public partial class UpdateClient
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UpdateClient(string baseUrl)
+        public UpdateClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
+            _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -1792,7 +1774,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/update/username");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1853,8 +1835,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1873,7 +1853,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/update/email");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1934,8 +1914,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 
@@ -1954,7 +1932,7 @@ namespace Services.IdentityService
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/update/password");
 
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2015,8 +1993,6 @@ namespace Services.IdentityService
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
 

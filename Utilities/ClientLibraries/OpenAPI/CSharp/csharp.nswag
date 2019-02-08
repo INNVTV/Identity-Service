@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "NetCore21",
+  "runtime": "NetCore22",
   "defaultVariables": null,
   "swaggerGenerator": {
     "fromSwagger": {
@@ -15,7 +15,7 @@
       "generateClientClasses": true,
       "generateClientInterfaces": false,
       "generateDtoTypes": true,
-      "injectHttpClient": false,
+      "injectHttpClient": true,
       "disposeHttpClient": true,
       "protectedMethods": [],
       "generateExceptionClasses": true,
