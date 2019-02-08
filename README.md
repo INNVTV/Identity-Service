@@ -28,7 +28,7 @@ The only public endpoints should be the Authentication endpoint.
 
 
 # Architecture Notes
-The architecture is based off of the [.Net Core Cleal Architecture](https://github.com/INNVTV/NetCore-Clean-Architecture) project. This means there is a strong CQRS pattern in place using MediatR.
+Project architecture is based off of my [.Net Core Clean Architecture](https://github.com/INNVTV/NetCore-Clean-Architecture) project. This means there is a strong CQRS pattern in place using MediatR.
 
 ## OpenAPI/Swagger
 All OpenAPI endpoints are secured by ApiKey. Swagger UI will allow you to authorize your calls for debugging purposes.
