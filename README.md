@@ -37,13 +37,15 @@ Since all OpenAPI endpoints are secured by ApiKey the Swagger UI will allow you 
 ## NSwag Generated Client Code
 Be sure that have **Inject HttpClient via constructor** set to true so that X-API-KEY header can be passed into your client calls.
 
-Here is an example of calling the API:
+Example of calling the API with HttpClient and request headers for the ApiKey:
 
-    var httpClient = new System.Net.Http.HttpClient();
-    httpClient.DefaultRequestHeaders.Add("X-API-KEY", "X-API-KEY");
+    using (var httpClient = new System.Net.Http.HttpClient())
+    {
+        httpClient.DefaultRequestHeaders.Add("X-API-KEY", "<YOUR_API_KEY>");
 
-    var usersClient = new Services.IdentityService.UsersClient("http://localhost:53227", httpClient);
-    var results = await usersClient.ListAsync(40, Services.IdentityService.OrderBy.CreatedDate, Services.IdentityService.OrderDirection.ASC, "");
+        var usersClient = new Services.IdentityService.RolesClient("https://localhost:53227", httpClient);
+        var results = await usersClient.ListAsync();
+    }
 
 ### Shared Client Library
 Shared client library for OpenAPI/Swagger/gRPC services are found in the "Utilities" folder.
