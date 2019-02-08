@@ -25,14 +25,14 @@ Identity-As-A-Service written from scratch in .Net Core using a CQRS architectur
 Project architecture is based off of my [.Net Core Clean Architecture](https://github.com/INNVTV/NetCore-Clean-Architecture) project. This means there is a strong CQRS pattern in place using MediatR.
 
 # Security
-A Primary and Secondary APIKey is used to authenticate calls to the **/api** endpoints. This is handles by the **ApiKeyAuthenticationMiddleware** class found in **Core.Infrastructure.Middleware.ApiKeyAuthentication** 
+A Primary and Secondary APIKey is used to authenticate calls to the **/api** endpoints. This is handled by the **ApiKeyAuthenticationMiddleware** class found in **Core.Infrastructure.Middleware.ApiKeyAuthentication** 
 
-We allow non api calls to flow through so that unauthenticated users can interact with the public ui for logins and password recovery actions.
+Non api calls are allowed to flow through unauthenticated do that users can interact with the public UI for login, invitation and password recovery actions.
 
-Note: A secondary key is included to make key rotations less impactful.
+**Note:** The secondary api key is included in order to make key rotations less impactful in a microservices enviornment.
 
 ## OpenAPI/Swagger
-All OpenAPI endpoints are secured by ApiKey. Swagger UI will allow you to authorize your calls for debugging purposes.
+Since all OpenAPI endpoints are secured by ApiKey the Swagger UI will allow you to authorize your calls for debugging purposes. In the current version there is a green "Authorize button" found in the top right of the Swagger UI page.
 
 ## NSwag Generated Client Code
 Be sure that have **Inject HttpClient via constructor** set to true so that X-API-KEY header can be passed into your client calls.
