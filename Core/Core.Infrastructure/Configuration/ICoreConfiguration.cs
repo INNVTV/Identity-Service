@@ -36,7 +36,10 @@ namespace Core.Infrastructure.Configuration
 
     public class SecuritySettings
     {
-        public string ApiKey { get; set; }
+        public string PrimaryApiKey { get; set; }
+        public string SecondaryApiKey { get; set; }
+
+        public bool ForceSecureApiCalls { get; set; }
     }
 
 
