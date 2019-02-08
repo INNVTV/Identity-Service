@@ -14,9 +14,9 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
 {
     public class ApiKeyAuthenticationMiddleware
     {
-        // TODO: Build out tiered api key perission system
         private string _primaryApiKey = string.Empty;
         private string _secondaryApiKey = string.Empty;
+        private bool _forceSecureApiCalls = false;
 
         private readonly RequestDelegate next;
 
@@ -26,6 +26,7 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
 
             _primaryApiKey = coreConfiguraton.Security.PrimaryApiKey;
             _secondaryApiKey = coreConfiguraton.Security.SecondaryApiKey;
+            _forceSecureApiCalls = coreConfiguraton.Security.ForceSecureApiCalls;
         }
 
         public async Task Invoke(HttpContext context /* other dependencies */)
@@ -34,17 +35,16 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
 
             if (context.Request.Path.HasValue)
             {
-                // We only require api keys on our API endpoints
+                // We only require api keys and secure calls on our API endpoints
                 if(context.Request.Path.Value.StartsWith("/api"))
                 {
-
-                    /*
-                    if(!context.Request.IsHttps)
+                    
+                    if(_forceSecureApiCalls && !context.Request.IsHttps)
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         await context.Response.WriteAsync("Please only connect via HTTPS");
                     }
-                    */
+                    
 
                     var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
                     if (apiKeyExists)

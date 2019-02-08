@@ -38,6 +38,8 @@ namespace Core.Infrastructure.Configuration
     {
         public string PrimaryApiKey { get; set; }
         public string SecondaryApiKey { get; set; }
+
+        public bool ForceSecureApiCalls { get; set; }
     }
 
 

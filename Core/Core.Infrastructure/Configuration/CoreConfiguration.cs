@@ -24,8 +24,10 @@ namespace Core.Infrastructure.Configuration
 
             // Map appsettings.json
             Application.Name = configuration.GetSection("Application").GetSection("Name").Value;
+
             Security.PrimaryApiKey = configuration.GetSection("Security").GetSection("PrimaryApiKey").Value;
             Security.SecondaryApiKey = configuration.GetSection("Security").GetSection("SecondaryApiKey").Value;
+            Security.ForceSecureApiCalls = Boolean.Parse(configuration.GetSection("Security").GetSection("ForceSecureApiCalls").Value);
 
             JSONWebTokens.ExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("ExpirationHours").Value);
             JSONWebTokens.PrivateKeyXmlString = configuration.GetSection("JWT").GetSection("PrivateKeyXmlString").Value;
