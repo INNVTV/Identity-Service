@@ -21,14 +21,15 @@ Identity-As-A-Service written from scratch in .Net Core using a CQRS architectur
  * Easy to refactor to your needs
 
 
-## Users, Roles and Authorization API Endpoints
-The UsersController, RolesController and AuthoriationControllers contain endpoints that should only be used for debugging and development purposes. A production instance of Identty Services shoul comment out these endpoints and rely on the secure gRPC endpoints to accept commands and queries from associated microservices within the same application space.
-
-The only public endpoints should be the Authentication endpoint.
-
-
 # Architecture Notes
 Project architecture is based off of my [.Net Core Clean Architecture](https://github.com/INNVTV/NetCore-Clean-Architecture) project. This means there is a strong CQRS pattern in place using MediatR.
+
+# Security
+A Primary and Secondary APIKey is used to authenticate calls to the **/api** endpoints. This is handles by the **ApiKeyAuthenticationMiddleware** class found in **Core.Infrastructure.Middleware.ApiKeyAuthentication** 
+
+We allow non api calls to flow through so that unauthenticated users can interact with the public ui for logins and password recovery actions.
+
+Note: A secondary key is included to make key rotations less impactful.
 
 ## OpenAPI/Swagger
 All OpenAPI endpoints are secured by ApiKey. Swagger UI will allow you to authorize your calls for debugging purposes.
@@ -50,8 +51,9 @@ Shared client library for OpenAPI/Swagger/gRPC services are found in the "Utilit
 ## gRPC
 gRPC services are partially built out for those that wish to use remote pocedure calls.
 
-# RSA Key Generation
-Utilities/Cryptography/RSAKeyGeneration
+# JWT and RSA Key Generation
+
+RSA keys can be generated using the **Utilities/Cryptography/RSAKeyGeneration** utility
 
 ## Public Keys API
     /api/public/keys

@@ -15,31 +15,55 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
     public class ApiKeyAuthenticationMiddleware
     {
         // TODO: Build out tiered api key perission system
-        private string _apiKeyToCheck = string.Empty;
+        private string _primaryApiKey = string.Empty;
+        private string _secondaryApiKey = string.Empty;
 
         private readonly RequestDelegate next;
 
         public ApiKeyAuthenticationMiddleware(RequestDelegate next, ICoreConfiguration coreConfiguraton)
         {
             this.next = next;
-            _apiKeyToCheck = coreConfiguraton.Security.ApiKey;
+
+            _primaryApiKey = coreConfiguraton.Security.PrimaryApiKey;
+            _secondaryApiKey = coreConfiguraton.Security.SecondaryApiKey;
         }
 
         public async Task Invoke(HttpContext context /* other dependencies */)
         {
             bool validKey = false;
-            var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
-            if(apiKeyExists)
+
+            if (context.Request.Path.HasValue)
             {
-                if(context.Request.Headers["X-API-KEY"].Equals(_apiKeyToCheck))
+                // We only require api keys on our API endpoints
+                if(context.Request.Path.Value.StartsWith("/api"))
+                {
+
+                    /*
+                    if(!context.Request.IsHttps)
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        await context.Response.WriteAsync("Please only connect via HTTPS");
+                    }
+                    */
+
+                    var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
+                    if (apiKeyExists)
+                    {
+                        if (context.Request.Headers["X-API-KEY"].Equals(_primaryApiKey) || context.Request.Headers["X-API-KEY"].Equals(_secondaryApiKey))
+                        {
+                            validKey = true;
+                        }
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        await context.Response.WriteAsync("Please add an ApiKey to you request header");
+                    }
+                }
+                else
                 {
                     validKey = true;
                 }
-            }
-            else
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                await context.Response.WriteAsync("Please add an ApiKey to you request header");
             }
 
             if(!validKey)
