@@ -13,7 +13,7 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
 {
     public class ApiKeyAuthenticationMiddleware
     {
-        private const string APIKeyToCheck = "k1234567891011121314151617181920";
+        private const string ApiKeyToCheck = "k1234567891011121314151617181920";
         private readonly RequestDelegate next;
 
         public ApiKeyAuthenticationMiddleware(RequestDelegate next)
@@ -25,10 +25,10 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
         public async Task Invoke(HttpContext context /* other dependencies */)
         {
             bool validKey = false;
-            var apiKeyExists = context.Request.Headers.ContainsKey("APIKey");
+            var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
             if(apiKeyExists)
             {
-                if(context.Request.Headers["APIKey"].Equals(APIKeyToCheck))
+                if(context.Request.Headers["X-API-KEY"].Equals(ApiKeyToCheck))
                 {
                     validKey = true;
                 }
@@ -36,13 +36,13 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
             else
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                await context.Response.WriteAsync("Please add an APIKey to you request header");
+                await context.Response.WriteAsync("Please add an ApiKey to you request header");
             }
 
             if(!validKey)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await context.Response.WriteAsync("Invalid API Key");
+                await context.Response.WriteAsync("Invalid ApiKey");
             }
             else
             {

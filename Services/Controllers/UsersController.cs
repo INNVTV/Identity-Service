@@ -23,6 +23,7 @@ using Core.Application.Users.Commands.AddToRole;
 using Core.Application.Users.Commands.RemoveFromRole;
 using Core.Application.Users.Queries.GetUserById;
 using Core.Application.Passwords.Commands.UpdatePassword;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityService.Controllers
 {
@@ -42,6 +43,7 @@ namespace IdentityService.Controllers
 
         [Route("create")]
         [HttpPost]
+        [Authorize]
         public async Task<CreateUserCommandResponse> Post(CreateUserServiceModel createUserServiceModel)
         {
             //Use AutoMapper instance to transform ServiceModel into MediatR Request (Configured in Startup)
