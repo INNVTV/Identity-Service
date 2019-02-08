@@ -33,7 +33,7 @@ namespace IdentityService.Controllers
             return result;
         }
 
-        [Route("rsa/public/keys")]
+        [Route("public/keys")]
         [HttpGet]
         public PublicRsaKeysServiceModel Get()
         {

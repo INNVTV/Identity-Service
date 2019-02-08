@@ -53,10 +53,10 @@ gRPC services are partially built out for those that wish to use remote pocedure
 # RSA Key Generation
 Utilities/Cryptography/RSAKeyGeneration
 
-# Public Keys API
-    /api/rsa/public/keys
+## Public Keys API
+    /api/public/keys
 
-#Public Keys Uri
+## Public Keys Uri
     /public/keys
 
 ### JSON Web Tokens (JWT)
