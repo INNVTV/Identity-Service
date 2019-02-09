@@ -33,6 +33,14 @@ namespace IdentityService.Controllers
             return result;
         }
 
+        [Route("authenticate/refresh")]
+        [HttpPost]
+        public async Task<AuthenticateRefreshTokenCommandResponse> Post(AuthenticateRefreshTokenCommand authenticateRefreshTokenCommand)
+        {
+            var result = await _mediator.Send(authenticateRefreshTokenCommand);
+            return result;
+        }
+
         [Route("public/keys")]
         [HttpGet]
         public PublicRsaKeysServiceModel Get()
