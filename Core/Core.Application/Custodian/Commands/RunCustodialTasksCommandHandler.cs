@@ -1,4 +1,6 @@
-﻿using Core.Application.Custodian.Models;
+﻿using Core.Application.Authentication.Commands.DeleteRefreshToken;
+using Core.Application.Authentication.Queries.GetExpiredRefreshTokens;
+using Core.Application.Custodian.Models;
 using Core.Application.Invitations.Commands.DeleteInvitation;
 using Core.Application.Invitations.Queries.GetExpiredInvitations;
 using Core.Infrastructure.Configuration;
@@ -36,16 +38,16 @@ namespace Core.Application.Custodian.Commands
 
             var expiredInvitationsQuery = new GetExpiredInvitationsQuery();
 
-            var expiredInventoryCount = 0;
-            var processNextBatch = true;
+            var expiredInvitationsCount = 0;
+            var processNextInvitationsBatch = true;
 
-            while (processNextBatch)
+            while (processNextInvitationsBatch)
             {
                 var result = await _mediator.Send(expiredInvitationsQuery);
 
                 if (result.Count > 0)
                 {
-                    expiredInventoryCount = expiredInventoryCount + result.Count;
+                    expiredInvitationsCount = expiredInvitationsCount + result.Count;
 
                     foreach (var id in result.Ids)
                     {
@@ -53,11 +55,42 @@ namespace Core.Application.Custodian.Commands
                         var deleteResult = await _mediator.Send(deleteInvitationCommand);
                         report.TaskLog.Add(String.Concat("Expired invitation deleted. Id: ", id));
                     }
-                    processNextBatch = result.HasMoreResults;
+                    processNextInvitationsBatch = result.HasMoreResults;
                 }
                 else
                 {
-                    processNextBatch = false;
+                    processNextInvitationsBatch = false;
+                }
+            }
+
+            #endregion
+
+            #region Delete Expired RefreshTokens
+
+            var expiredRefreshTokensQuery = new GetExpiredRefreshTokensQuery();
+
+            var expiredRefreshTokensCount = 0;
+            var processNextRefreshTokensBatch = true;
+
+            while (processNextRefreshTokensBatch)
+            {
+                var result = await _mediator.Send(expiredRefreshTokensQuery);
+
+                if (result.Count > 0)
+                {
+                    expiredRefreshTokensCount = expiredRefreshTokensCount + result.Count;
+
+                    foreach (var id in result.Ids)
+                    {
+                        var deleteDeleteRefeshTokenCommand = new DeleteRefreshTokenCommand { Id = id };
+                        var deleteResult = await _mediator.Send(deleteDeleteRefeshTokenCommand);
+                        report.TaskLog.Add(String.Concat("Expired refresh token deleted. Id: ", id));
+                    }
+                    processNextRefreshTokensBatch = result.HasMoreResults;
+                }
+                else
+                {
+                    processNextRefreshTokensBatch = false;
                 }
             }
 
@@ -80,5 +113,6 @@ namespace Core.Application.Custodian.Commands
 
             return report;
         }
+
     }
 }

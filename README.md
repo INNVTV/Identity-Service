@@ -7,6 +7,7 @@ Identity-As-A-Service written from scratch in .Net Core using a CQRS architectur
 ## Features
  * Microservices Ready
  * JWT token authentication w/ RSA Public/Private key pairs
+ * Refresh tokens
  * CQRS Architecture using MediatR, FluentValidation and Custom Middleware
  * CosmosDB/Redis Persistence Layer
  * User/Role/Invitations Management

@@ -43,7 +43,6 @@ namespace IdentityService.Controllers
 
         [Route("create")]
         [HttpPost]
-        [Authorize]
         public async Task<CreateUserCommandResponse> Post(CreateUserServiceModel createUserServiceModel)
         {
             //Use AutoMapper instance to transform ServiceModel into MediatR Request (Configured in Startup)

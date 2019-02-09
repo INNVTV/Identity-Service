@@ -1,4 +1,6 @@
-﻿using Core.Application.Authentication.Helpers;
+﻿using Core.Application.Authentication.Commands.GenerateRefreshToken;
+using Core.Application.Authentication.Helpers;
+using Core.Application.Authentication.Models;
 using Core.Application.Users.Models.Documents;
 using Core.Infrastructure.Configuration;
 using Core.Infrastructure.Persistence.DocumentDatabase;
@@ -21,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace Core.Application.Authentication.Commands.AuthenticateUser
 {
-    public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticateUserCommandResponse>
+    public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticationResponse>
     {
         //MediatR will automatically inject dependencies
         private readonly IMediator _mediator;
@@ -37,7 +39,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
             _redisContext = redisContext;
         }
 
-        public async Task<AuthenticateUserCommandResponse> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResponse> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
         {
 
             // Validate our input
@@ -45,7 +47,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
-                return new AuthenticateUserCommandResponse(validationResult.Errors) { Message = "Please include both a username/email and a password" };
+                return new AuthenticationResponse(validationResult.Errors) { Message = "Please include both a username/email and a password" };
             }
 
 
@@ -67,7 +69,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
                 attemptsCount = Convert.ToInt32(attemptsCacheValue);
                 if (attemptsCount >= _coreConfiguration.Logins.MaxAttemptsBeforeLockout)
                 {
-                    return new AuthenticateUserCommandResponse { Message = "Too many attempts!" };
+                    return new AuthenticationResponse { Message = "Too many attempts!" };
                 }
             }
 
@@ -119,7 +121,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
                 #endregion
 
-                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials" };
+                return new AuthenticationResponse { Message = "Incorrect credentials" };
             }
 
             #endregion
@@ -137,7 +139,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
                 #endregion
 
-                return new AuthenticateUserCommandResponse { Message = "Incorrect credentials" };
+                return new AuthenticationResponse { Message = "Incorrect credentials" };
 
             }
             else
@@ -153,48 +155,33 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
 
                 //=========================================================================
                 //
-                //      BUILD THE JWT TOKEN AND RETURN RESULTS
+                //      BUILD THE JWT TOKEN, REFRESH TOKEN AND RETURN RESULTS
                 //
                 //=========================================================================
 
 
-                var rsaProvider = new RSACryptoServiceProvider();
-
-                // Note: Requires the RsaCryptoExtensions.cs class in 'Helpers' folder (ToXMLString(true/flase) does not work in .Net Core so we have an extention method that parses pub/priv without boolean flag)
-                rsaProvider.FromXmlRsaString(_coreConfiguration.JSONWebTokens.PrivateKeyXmlString);
-                var rsaKey = new RsaSecurityKey(rsaProvider);
-
-                var signingCredentials = new SigningCredentials(rsaKey, SecurityAlgorithms.RsaSha256);
-
-                List<Claim> claims = new List<Claim>()
-                {
-                    new Claim("id", userDocumentModel.Id),
-                    new Claim("userName", userDocumentModel.UserName),
-                    new Claim("nameKey", userDocumentModel.NameKey),
-                    new Claim("email", userDocumentModel.Email),
-                    new Claim("firstName", userDocumentModel.FirstName),
-                    new Claim("lastName", userDocumentModel.LastName),
-                };
-
-                // Add roles to the claim
-                foreach (var role in userDocumentModel.Roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-
-                var handler = new JwtSecurityTokenHandler();
-
-                var jwtSecurityToken = handler.CreateJwtSecurityToken(
-                    "IdentityService",
-                    "IdentityConsumers",
-                    new ClaimsIdentity(claims),
-                    DateTime.UtcNow,
-                    DateTime.UtcNow.AddHours(_coreConfiguration.JSONWebTokens.ExpirationHours),
-                    DateTime.UtcNow,
-                    signingCredentials
+                var jwtTokenString = GenerateJwtToken.GenerateJwtTokenString(
+                    _coreConfiguration,
+                    userDocumentModel.Id,
+                    userDocumentModel.UserName,
+                    userDocumentModel.NameKey,
+                    userDocumentModel.Email,
+                    userDocumentModel.FirstName,
+                    userDocumentModel.LastName,
+                    userDocumentModel.Roles
                     );
 
-                var jwtTokenString = handler.WriteToken(jwtSecurityToken);
+                // Generate refresh token
+                var refreshToken = string.Empty;
+                try
+                {
+                    refreshToken = await _mediator.Send(new GenerateRefreshTokenCommand { UserId = userDocumentModel.Id });
+                }
+                catch(Exception ex)
+                {
+                    Log.Error("There was an error generating a refresh token for {loginString} during authentication {@ex}", request.UserNameOrEmail, ex);
+                }
+                
 
 
                 //=========================================================================
@@ -246,7 +233,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
                 var user = AutoMapper.Mapper.Map<Core.Domain.Entities.User>(userDocumentModel);
                 Log.Information("User authenticated {@user}", user);
 
-                return new AuthenticateUserCommandResponse { isSuccess = true, JwtToken = jwtTokenString, User = user, Message = "Authentication succeeded" };
+                return new AuthenticationResponse { isSuccess = true, JwtToken = jwtTokenString, RefreshToken = refreshToken, User = user, Message = "Authentication succeeded" };
             }
         }
 

@@ -44,21 +44,29 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
                         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         await context.Response.WriteAsync("Please only connect via HTTPS");
                     }
-                    
 
-                    var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
-                    if (apiKeyExists)
+                    // We allow authentication and refresh token requests to pass through
+                    if(context.Request.Path.Value.StartsWith("/api/authenticate"))
                     {
-                        if (context.Request.Headers["X-API-KEY"].Equals(_primaryApiKey) || context.Request.Headers["X-API-KEY"].Equals(_secondaryApiKey))
-                        {
-                            validKey = true;
-                        }
+                        validKey = true;
                     }
                     else
                     {
-                        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        await context.Response.WriteAsync("Please add an ApiKey to you request header");
+                        var apiKeyExists = context.Request.Headers.ContainsKey("X-API-KEY");
+                        if (apiKeyExists)
+                        {
+                            if (context.Request.Headers["X-API-KEY"].Equals(_primaryApiKey) || context.Request.Headers["X-API-KEY"].Equals(_secondaryApiKey))
+                            {
+                                validKey = true;
+                            }
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            await context.Response.WriteAsync("Please add an ApiKey to you request header");
+                        }
                     }
+
                 }
                 else
                 {
