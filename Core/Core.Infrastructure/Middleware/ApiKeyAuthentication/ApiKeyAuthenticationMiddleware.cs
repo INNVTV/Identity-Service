@@ -45,8 +45,8 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
                         await context.Response.WriteAsync("Please only connect via HTTPS");
                     }
 
-                    // We allow refresh token requests to pass through
-                    if(context.Request.Path.Value.StartsWith("/api/authentication/refresh"))
+                    // We allow authentication and refresh token requests to pass through
+                    if(context.Request.Path.Value.StartsWith("/api/authenticate"))
                     {
                         validKey = true;
                     }

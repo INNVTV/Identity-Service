@@ -4,18 +4,17 @@ using FluentValidation.Results;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Core.Application.Authentication.Commands.AuthenticateUser
+namespace Core.Application.Authentication.Models
 {
-    [JsonObject(Title = "AuthenticationResponse")] //<-- Update name for OpenAPI/Swagger
-    public class AuthenticateUserCommandResponse : BaseResponse
+    public class AuthenticationResponse : BaseResponse
     {
-        public AuthenticateUserCommandResponse()
+        public AuthenticationResponse()
             : base()
         {
 
         }
 
-        public AuthenticateUserCommandResponse(IList<ValidationFailure> failures)
+        public AuthenticationResponse(IList<ValidationFailure> failures)
             : base(failures)
         {
 

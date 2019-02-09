@@ -16,7 +16,7 @@ namespace Core.Application.Authentication.Models.Documents
             Id = Guid.NewGuid().ToString();
             NameKey = Id; //<--our default for documents that won't need a pretty route
 
-            UserId = Guid.NewGuid().ToString();
+            UserId = userId;
             CreatedDate = DateTime.UtcNow;
 
         }

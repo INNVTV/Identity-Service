@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityService.ServiceModels;
+using Core.Application.Authentication.Models;
+using Core.Application.Authentication.Commands.AuthenticateRefreshToken;
 
 namespace IdentityService.Controllers
 {
@@ -27,7 +29,7 @@ namespace IdentityService.Controllers
 
         [Route("authenticate")]
         [HttpPost]
-        public async Task<AuthenticateUserCommandResponse> Post(AuthenticateUserCommand authenticateUserCommand)
+        public async Task<AuthenticationResponse> Post(AuthenticateUserCommand authenticateUserCommand)
         {
             var result = await _mediator.Send(authenticateUserCommand);
             return result;
@@ -35,7 +37,7 @@ namespace IdentityService.Controllers
 
         [Route("authenticate/refresh")]
         [HttpPost]
-        public async Task<AuthenticateRefreshTokenCommandResponse> Post(AuthenticateRefreshTokenCommand authenticateRefreshTokenCommand)
+        public async Task<AuthenticationResponse> Post(AuthenticateRefreshTokenCommand authenticateRefreshTokenCommand)
         {
             var result = await _mediator.Send(authenticateRefreshTokenCommand);
             return result;

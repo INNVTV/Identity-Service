@@ -45,9 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Commands\GenerateRefreshToken\" />
-    <Folder Include="Authentication\Commands\AuthenticateRefreshToken\" />
-    <Folder Include="Authentication\Queries\GetRefreshTokenById\" />
+    <Folder Include="Authentication\Commands\DeleteRefreshToken\" />
     <Folder Include="Authentication\Queries\GetExpiredRefreshTokens\" />
     <Folder Include="Authorization\Queries\UserRolesQuery\" />
     <Folder Include="Authorization\Queries\UserIsInRoleQuery\" />
