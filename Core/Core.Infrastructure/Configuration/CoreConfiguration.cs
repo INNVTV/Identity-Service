@@ -30,6 +30,7 @@ namespace Core.Infrastructure.Configuration
             Security.ForceSecureApiCalls = Boolean.Parse(configuration.GetSection("Security").GetSection("ForceSecureApiCalls").Value);
 
             JSONWebTokens.ExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("ExpirationHours").Value);
+            JSONWebTokens.RefreshExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("RefreshExpirationHours").Value);
             JSONWebTokens.PrivateKeyXmlString = configuration.GetSection("JWT").GetSection("PrivateKeyXmlString").Value;
             JSONWebTokens.PublicKeyXmlString = configuration.GetSection("JWT").GetSection("PublicKeyXmlString").Value;
             JSONWebTokens.PublicKeyPEM = configuration.GetSection("JWT").GetSection("PublicKeyPEM").Value;
