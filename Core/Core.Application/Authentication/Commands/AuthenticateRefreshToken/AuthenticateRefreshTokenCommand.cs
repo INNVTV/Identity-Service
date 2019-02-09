@@ -8,6 +8,6 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
 {
     public class AuthenticateRefreshTokenCommand : IRequest<AuthenticationResponse>
     {
-        public string TokenString { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

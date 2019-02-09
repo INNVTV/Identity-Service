@@ -1,4 +1,5 @@
-﻿using Core.Application.Authentication.Commands.GenerateRefreshToken;
+﻿using Core.Application.Authentication.Commands.DeleteRefreshToken;
+using Core.Application.Authentication.Commands.GenerateRefreshToken;
 using Core.Application.Authentication.Helpers;
 using Core.Application.Authentication.Models;
 using Core.Application.Authentication.Models.Documents;
@@ -53,7 +54,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
             #region get request token from document store
 
             // Create the query
-            string sqlQuery = $"SELECT * FROM Documents d WHERE d.id ='{ request.TokenString }'";
+            string sqlQuery = $"SELECT * FROM Documents d WHERE d.id ='{ request.RefreshToken }'";
             var sqlSpec = new SqlQuerySpec { QueryText = sqlQuery };
 
             // Generate collection uri
@@ -86,7 +87,9 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
             }
             else if (refreshDocumentModel.CreatedDate.AddHours(_coreConfiguration.JSONWebTokens.RefreshExpirationHours) <= DateTime.UtcNow)
             {
-                return new AuthenticationResponse { Message = "Invalid Token" };
+                // Delete the expired refresh token and return as expired
+                await _mediator.Send(new DeleteRefreshTokenCommand { Id = request.RefreshToken });
+                return new AuthenticationResponse { Message = "Expired Token" };
             }
             else
             {
@@ -121,11 +124,16 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
                     user.Roles
                     );
 
-                // Generate refresh token
+                
                 var refreshToken = string.Empty;
+
                 try
                 {
+                    // Generate new refresh token
                     refreshToken = await _mediator.Send(new GenerateRefreshTokenCommand { UserId = user.Id.ToString() });
+
+                    // Delete this refresh token
+                    await _mediator.Send(new DeleteRefreshTokenCommand { Id = request.RefreshToken });
                 }
                 catch (Exception ex)
                 {
