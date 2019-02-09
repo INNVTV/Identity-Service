@@ -12,14 +12,6 @@ namespace Core.Common.Constants
     /// </summary>
     public static class DocumentType
     {
-        // Account Documents --------------
-
-        public static string Identity()
-        {
-            return "Identity";
-        }
-
-
         // User Documents ----------------
 
         public static string User()
@@ -39,6 +31,13 @@ namespace Core.Common.Constants
         public static string Invitation()
         {
             return "Invitation";
+        }
+
+        // Refresh Token Documents --------------
+
+        public static string RefreshToken()
+        {
+            return "RefreshToken";
         }
     }
 }
