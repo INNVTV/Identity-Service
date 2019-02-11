@@ -43,16 +43,14 @@ namespace Core.Application.Passwords.Commands.ForgotPassword
             }
 
             // Get user (if exists)
-            var userViewModel = await _mediator.Send(new GetUserByUserNameQuery { UserName = request.UserNameOrEmail });
-            if(userViewModel.User == null)
+            var user = await _mediator.Send(new GetUserByUserNameQuery { UserName = request.UserNameOrEmail });
+            if(user == null)
             {
-                userViewModel = await _mediator.Send(new GetUserByEmailQuery { Email = request.UserNameOrEmail });
+                user = await _mediator.Send(new GetUserByEmailQuery { Email = request.UserNameOrEmail });
             }
 
-            if(userViewModel.User != null)
+            if(user != null)
             {
-                var user = userViewModel.User;
-
                 #region Setup our caching client and key
 
                 IDatabase cache = _redisContext.ConnectionMultiplexer.GetDatabase();

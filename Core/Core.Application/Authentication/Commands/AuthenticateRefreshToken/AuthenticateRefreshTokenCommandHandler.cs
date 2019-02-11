@@ -98,7 +98,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
                 //=========================================================================
 
                 // Get the user
-                var userViewModel = await _mediator.Send(new GetUserByIdQuery { Id = refreshDocumentModel.UserId });
+                var user = await _mediator.Send(new GetUserByIdQuery { Id = refreshDocumentModel.UserId });
 
                 //=========================================================================
                 //
@@ -106,12 +106,11 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
                 //
                 //=========================================================================
 
-                if(userViewModel == null || userViewModel.User == null)
+                if(user == null)
                 {
                     return new AuthenticationResponse { Message = "Invalid Token" };
                 }
 
-                var user = userViewModel.User;
 
                 var jwtTokenString = GenerateJwtToken.GenerateJwtTokenString(
                     _coreConfiguration,

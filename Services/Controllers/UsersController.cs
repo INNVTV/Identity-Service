@@ -24,6 +24,7 @@ using Core.Application.Users.Commands.RemoveFromRole;
 using Core.Application.Users.Queries.GetUserById;
 using Core.Application.Passwords.Commands.UpdatePassword;
 using Microsoft.AspNetCore.Authorization;
+using Core.Domain.Entities;
 
 namespace IdentityService.Controllers
 {
@@ -85,7 +86,7 @@ namespace IdentityService.Controllers
 
         [Route("username/{username}")]
         [HttpGet]
-        public async Task<UserDetailsViewModel> ByUserName(string username)
+        public async Task<User> ByUserName(string username)
         {
             var getUserByUserNameQuery = new GetUserByUserNameQuery() { UserName = username };
             return await _mediator.Send(getUserByUserNameQuery);
@@ -93,7 +94,7 @@ namespace IdentityService.Controllers
 
         [Route("email/{email}")]
         [HttpGet]
-        public async Task<UserDetailsViewModel> Byemail(string email)
+        public async Task<User> Byemail(string email)
         {
             var getUserByEmailQuery = new GetUserByEmailQuery() { Email = email };
             return await _mediator.Send(getUserByEmailQuery);
@@ -101,7 +102,7 @@ namespace IdentityService.Controllers
 
         [Route("id/{id}")]
         [HttpGet]
-        public async Task<UserDetailsViewModel> ById(string id)
+        public async Task<User> ById(string id)
         {
             var getUserByIdQuery = new GetUserByIdQuery() { Id = id };
             return await _mediator.Send(getUserByIdQuery);

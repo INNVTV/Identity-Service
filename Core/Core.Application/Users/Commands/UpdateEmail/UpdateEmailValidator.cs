@@ -40,9 +40,9 @@ namespace Core.Application.Users.Commands.UpdateEmail
         private bool EmailNotExist(string email)
         {
             var userByEmailQuery = new GetUserByEmailQuery { Email = email.ToLower().Trim() };
-            var userDetails = _mediator.Send(userByEmailQuery);
+            var userResults = _mediator.Send(userByEmailQuery);
 
-            if (userDetails.Result.User != null)
+            if (userResults.Result != null)
             {
                 return false;
             }

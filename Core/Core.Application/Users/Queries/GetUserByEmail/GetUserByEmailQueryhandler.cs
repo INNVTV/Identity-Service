@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Core.Application.Users.Queries.GetUserByEmail
 {
-    public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, UserDetailsViewModel>
+    public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, Domain.Entities.User>
     {
         //MediatR will automatically inject dependencies
         private readonly IMediator _mediator;
@@ -31,7 +31,7 @@ namespace Core.Application.Users.Queries.GetUserByEmail
             //Log Activity, Check Authorization, Etc...
         }
 
-        public async Task<UserDetailsViewModel> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
             
             //==========================================================================
@@ -79,7 +79,7 @@ namespace Core.Application.Users.Queries.GetUserByEmail
             }
 
             // Create our ViewModel and transform our document model
-            var userViewModel = new UserDetailsViewModel();
+            //var userViewModel = new UserDetailsViewModel();
 
             //==========================================================================
             // POST QUERY CHECKLIST 
@@ -90,18 +90,15 @@ namespace Core.Application.Users.Queries.GetUserByEmail
             // NOTE: Redis Multiplexer is already setup in our DI container using IRedisContext
             //--------------------------------------------------------------------------
 
-            // TODO: Check user role to include data for the view to use
-            userViewModel.DeleteEnabled = true;
-            userViewModel.EditEnabled = true;
 
             if(userDocumentModel != null)
             {
                 //Use AutoMapper to transform DocumentModel into Domain Model (Configure via Core.Startup.AutoMapperConfiguration)
                 var user = AutoMapper.Mapper.Map<Core.Domain.Entities.User>(userDocumentModel);
-                userViewModel.User = user;
+                return user;
             }
 
-            return userViewModel;
+            return null;
             
         }
     }
