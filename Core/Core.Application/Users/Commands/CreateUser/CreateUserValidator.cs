@@ -111,9 +111,9 @@ namespace Core.Application.Users.Commands.CreateUser
         private bool UserNameNotExist(string userName)
         {
             var userByUserNameQuery = new GetUserByUserNameQuery { UserName = Common.Transformations.NameKey.Transform(userName) };
-            var userDetails = _mediator.Send(userByUserNameQuery);
+            var userResults = _mediator.Send(userByUserNameQuery);
 
-            if (userDetails.Result.User != null)
+            if (userResults.Result != null)
             {
                 return false;
             }
@@ -125,9 +125,9 @@ namespace Core.Application.Users.Commands.CreateUser
         {
             
             var userByEmailQuery = new GetUserByEmailQuery { Email = email.ToLower().Trim() };
-            var userDetails = _mediator.Send(userByEmailQuery);
+            var userResults = _mediator.Send(userByEmailQuery);
 
-            if (userDetails.Result.User != null)
+            if (userResults.Result != null)
             {
                 return false;
             }

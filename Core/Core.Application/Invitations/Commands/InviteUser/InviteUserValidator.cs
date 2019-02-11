@@ -46,9 +46,9 @@ namespace Core.Application.Invitations.Commands.InviteUser
         {
 
             var userByEmailQuery = new GetUserByEmailQuery { Email = email.ToLower().Trim() };
-            var userDetails = _mediator.Send(userByEmailQuery);
+            var userResult = _mediator.Send(userByEmailQuery);
 
-            if (userDetails.Result.User != null)
+            if (userResult.Result != null)
             {
                 return false;
             }
