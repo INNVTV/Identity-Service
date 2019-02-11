@@ -47,7 +47,6 @@ namespace IdentityService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             #region Setup Serilog for Logging
@@ -138,9 +137,6 @@ namespace IdentityService
 
             #endregion 
 
-
-
-
             #region Configure AutoMapper (Instance Version) for ServiceModels and gRPC Remote Services
 
             /*----------------------------------------
@@ -155,7 +151,6 @@ namespace IdentityService
 
                 //Service Models
                 cfg.CreateMap<CreateUserServiceModel, CreateUserCommand>();
-
 
                 // GrpcProtobuffer Messages:
                 // ---------------------------------------
@@ -225,7 +220,6 @@ namespace IdentityService
                 mapper);
             */
 
-
             // Initialize Core.Startup
             Core.Startup.Routines.Initialize(services.BuildServiceProvider().GetService<IMediator>());
 
@@ -258,8 +252,7 @@ namespace IdentityService
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-            
-
+           
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
