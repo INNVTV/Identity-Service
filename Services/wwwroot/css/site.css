@@ -17,6 +17,6 @@ html {
     width: 100%;
     white-space: nowrap;
     /* Set the fixed height of the footer here */
-    height: 62px;
-    line-height: 62px; /* Vertically center the text there */
+    height: 60px;
+    line-height: 58px; /* Vertically center the text there */
 }
