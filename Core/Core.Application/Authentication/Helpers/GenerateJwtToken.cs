@@ -40,8 +40,8 @@ namespace Core.Application.Authentication.Helpers
             var handler = new JwtSecurityTokenHandler();
 
             var jwtSecurityToken = handler.CreateJwtSecurityToken(
-                "IdentityService",
-                "IdentityConsumers",
+                coreConfiguration.JSONWebTokens.Issuer,
+                coreConfiguration.JSONWebTokens.Audience,
                 new ClaimsIdentity(claims),
                 DateTime.UtcNow,
                 DateTime.UtcNow.AddHours(coreConfiguration.JSONWebTokens.ExpirationHours),

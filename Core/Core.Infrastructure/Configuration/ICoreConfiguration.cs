@@ -52,6 +52,10 @@ namespace Core.Infrastructure.Configuration
 
         public int ExpirationHours { get; set; }
         public int RefreshExpirationHours { get; set; }
+
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+
         public string PrivateKeyXmlString { get; set; }
         public string PublicKeyXmlString { get; set; }
         public string PublicKeyPEM { get; set; }
