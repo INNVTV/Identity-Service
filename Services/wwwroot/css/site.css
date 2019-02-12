@@ -1,3 +1,22 @@
 ﻿body {
-    padding-top:30px;
+    padding-top: 10%;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 62px;
+    line-height: 62px; /* Vertically center the text there */
 }

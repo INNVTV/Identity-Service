@@ -17,13 +17,17 @@
 </head>
 <body>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr style="margin-top:45px;"/>
-        <footer>
-            <small>&copy; @DateTime.Now.Year - Identity Service</small>
-        </footer>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Identity Service
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
