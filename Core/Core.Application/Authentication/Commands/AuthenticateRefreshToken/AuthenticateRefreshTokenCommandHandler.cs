@@ -85,7 +85,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateRefreshToken
             {
                 return new AuthenticationResponse { Message = "Invalid Token" };
             }
-            else if (refreshDocumentModel.CreatedDate.AddHours(_coreConfiguration.JSONWebTokens.RefreshExpirationHours) <= DateTime.UtcNow)
+            else if (refreshDocumentModel.CreatedDate.AddHours(_coreConfiguration.JSONWebTokens.RefreshTokenExpirationHours) <= DateTime.UtcNow)
             {
                 // Delete the expired refresh token and return as expired
                 await _mediator.Send(new DeleteRefreshTokenCommand { Id = request.RefreshToken });
