@@ -49,9 +49,9 @@ namespace Core.Infrastructure.Configuration
 
     public class JWTConfiguration
     {
-
-        public int ExpirationHours { get; set; }
-        public int RefreshExpirationHours { get; set; }
+        public int CookieExpirationHours { get; set; }
+        public int TokenExpirationHours { get; set; }
+        public int RefreshTokenExpirationHours { get; set; }
 
         public string Issuer { get; set; }
         public string Audience { get; set; }

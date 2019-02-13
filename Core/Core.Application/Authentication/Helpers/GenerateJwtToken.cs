@@ -44,7 +44,7 @@ namespace Core.Application.Authentication.Helpers
                 coreConfiguration.JSONWebTokens.Audience,
                 new ClaimsIdentity(claims),
                 DateTime.UtcNow,
-                DateTime.UtcNow.AddHours(coreConfiguration.JSONWebTokens.ExpirationHours),
+                DateTime.UtcNow.AddHours(coreConfiguration.JSONWebTokens.TokenExpirationHours),
                 DateTime.UtcNow,
                 signingCredentials
                 );

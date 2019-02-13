@@ -29,8 +29,9 @@ namespace Core.Infrastructure.Configuration
             Security.SecondaryApiKey = configuration.GetSection("Security").GetSection("SecondaryApiKey").Value;
             Security.ForceSecureApiCalls = Boolean.Parse(configuration.GetSection("Security").GetSection("ForceSecureApiCalls").Value);
 
-            JSONWebTokens.ExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("ExpirationHours").Value);
-            JSONWebTokens.RefreshExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("RefreshExpirationHours").Value);
+            JSONWebTokens.CookieExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("CookieExpirationHours").Value);
+            JSONWebTokens.TokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("TokenExpirationHours").Value);
+            JSONWebTokens.RefreshTokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("RefreshTokenExpirationHours").Value);
             JSONWebTokens.Issuer = configuration.GetSection("JWT").GetSection("Issuer").Value;
             JSONWebTokens.Audience = configuration.GetSection("JWT").GetSection("Audience").Value;
             JSONWebTokens.PrivateKeyXmlString = configuration.GetSection("JWT").GetSection("PrivateKeyXmlString").Value;

@@ -44,7 +44,7 @@ namespace Core.Application.Authentication.Queries.GetExpiredRefreshTokens
             var expiredRefreshTokensModel = new ExpiredRefreshTokensModel();
 
             // Convert expired days to negative number
-            var expiredHoursSubtraction = System.Math.Abs(_coreConfiguration.JSONWebTokens.RefreshExpirationHours) * (-1);
+            var expiredHoursSubtraction = System.Math.Abs(_coreConfiguration.JSONWebTokens.RefreshTokenExpirationHours) * (-1);
 
             //var sqlQuery = new StringBuilder(String.Concat(
             //"SELECT d.id FROM Documents d WHERE d.CreatedDate <= ", DateTime.UtcNow.AddDays(expiredDaysSubtraction)));

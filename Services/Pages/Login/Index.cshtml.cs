@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Application.Authentication.Commands.AuthenticateUser;
+using Core.Infrastructure.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace IdentityService.Pages.Login
         public AuthenticateUserCommand AuthenticateUser { get; set; }
 
         readonly IMediator _mediator;
+        readonly ICoreConfiguration _coreConfiguration;
 
-        public IndexModel(IServiceProvider serviceProvider)
+        public IndexModel(IServiceProvider serviceProvider, ICoreConfiguration coreConfiguration)
         {
             _mediator = serviceProvider.GetService<IMediator>();
+            _coreConfiguration = coreConfiguration;
         }
 
         public void OnGet()
@@ -38,9 +41,11 @@ namespace IdentityService.Pages.Login
                 ViewData["Message"] = result.Message;
                 return Page();
             }
+           
+            // CROSS DOMAIN NOTE! ----------------
+            // Note that you will need to be on the same domain to use this cookie on the application requiring authentication
+            // To ease with local development it is recommended that you use the API endpoint to authenticate users from the application requring authentication.
 
-            // Store our JWT token and RefreshToken as cookies
-        
             Response.Cookies.Append(
               "jwtToken",
               result.JwtToken,
@@ -48,7 +53,9 @@ namespace IdentityService.Pages.Login
               {
                   IsEssential = true,
                   HttpOnly = true,
-                  Secure = true
+                  Secure = true,
+                  Expires = DateTime.UtcNow.AddHours(_coreConfiguration.JSONWebTokens.CookieExpirationHours),
+                  SameSite = SameSiteMode.Strict
               });
 
             Response.Cookies.Append(
@@ -58,12 +65,13 @@ namespace IdentityService.Pages.Login
               {
                   IsEssential = true,
                   HttpOnly = true,
-                  Secure = true
+                  Secure = true,
+                  Expires = DateTime.UtcNow.AddHours(_coreConfiguration.JSONWebTokens.CookieExpirationHours),
+                  SameSite = SameSiteMode.Strict
               });
-
-
-            // Redirect the user back to the client application
-            return Redirect(Request.Query["returnUrl"]);
+              
+             // Redirect the user back to the client application
+             return Redirect(Request.Query["returnUrl"]);
 
         }
     }
