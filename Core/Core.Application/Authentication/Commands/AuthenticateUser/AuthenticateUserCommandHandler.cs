@@ -129,7 +129,7 @@ namespace Core.Application.Authentication.Commands.AuthenticateUser
             //=========================================================================
             // DETERMINE IF THE PASSWORD IS CORRECT
             //=========================================================================
-            var authenticationGranted = Common.Hashing.PasswordHashing.ValidatePassword(request.Password, userDocumentModel.PasswordHash, userDocumentModel.PasswordSalt);
+            var authenticationGranted = Common.Encryption.PasswordHashing.ValidatePassword(request.Password, userDocumentModel.PasswordHash, userDocumentModel.PasswordSalt);
 
             if(!authenticationGranted)
             {

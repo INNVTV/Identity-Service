@@ -51,6 +51,9 @@ Example of calling the API with HttpClient and request headers for the ApiKey:
 ### Shared Client Library
 Shared client library for OpenAPI/Swagger/gRPC services are found in the "Utilities" folder.
 
+## NSwag/CSharp Clients
+Pre-generated Nswag settings and CSharp client can be found [here](https://github.com/INNVTV/Identity-Service/tree/master/Utilities/ClientLibraries/OpenAPI/CSharp).
+
 ## gRPC
 gRPC services are partially built out for those that wish to use remote pocedure calls.
 
@@ -64,7 +67,12 @@ RSA keys can be generated using the **Utilities/Cryptography/RSAKeyGeneration** 
 ## Public Keys Uri
     /public/keys
 
+## Refresh Token Security
+Refresh tokens are stored in cookies along with the JWT token, but are encrypted with a passphrase to ensure they can only be used by known applications.
+
+If building client/native apps the encryption should happen on the device with a unique passphrase per user/install.
+
 ### JSON Web Tokens (JWT)
-For more on [JSON Web Tokens](https://jwt.io/) visit the project site.
+For more on JSON Web Tokens visit the [project site](https://jwt.io/).
 
 

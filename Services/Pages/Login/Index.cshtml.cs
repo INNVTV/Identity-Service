@@ -42,9 +42,11 @@ namespace IdentityService.Pages.Login
                 return Page();
             }
            
-            // CROSS DOMAIN NOTE! ----------------
-            // Note that you will need to be on the same domain to use this cookie on the application requiring authentication
+            // CROSS DOMAIN COOKIE NOTES AND LOCAL DEBUGGING ----------------
+            // You will need to be on the same domain to use this cookie on the application requiring authentication
             // To ease with local development it is recommended that you use the API endpoint to authenticate users from the application requring authentication.
+            // This will require building out your own version of the login UI in your web or mobile app
+            // You can still use the password reset, invitiation acceptance, and other UIs in this web app.
 
             Response.Cookies.Append(
               "jwtToken",
@@ -58,9 +60,17 @@ namespace IdentityService.Pages.Login
                   SameSite = SameSiteMode.Strict
               });
 
+            // Refresh tokens last longer than JWT tokens and can be used by an attacker to gain access to secure areas even after a JWT expires.
+            // Since every request sends the cookies that belong to the domain we need to store our refresh token in a more secure manner in case they are ever intercepted.
+            // We use a passphrase that is only known to the server to encrypt and decrypt ALL user reresh tokens
+            // In a desktop/native app they should be stored encrypted until ready for use.
+
             Response.Cookies.Append(
               "refreshToken",
-              result.RefreshToken,
+              // Encrypted Token
+              Core.Common.Encryption.StringEncryption.EncryptString(
+                  result.RefreshToken, _coreConfiguration.JSONWebTokens.RefreshTokenEncryptionPassPhrase
+                  ),
               new CookieOptions()
               {
                   IsEssential = true,

@@ -32,6 +32,8 @@ namespace Core.Infrastructure.Configuration
             JSONWebTokens.CookieExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("CookieExpirationHours").Value);
             JSONWebTokens.TokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("TokenExpirationHours").Value);
             JSONWebTokens.RefreshTokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("RefreshTokenExpirationHours").Value);
+            JSONWebTokens.RefreshTokenEncryptionPassPhrase = configuration.GetSection("JWT").GetSection("RefreshTokenEncryptionPassPhrase").Value;
+
             JSONWebTokens.Issuer = configuration.GetSection("JWT").GetSection("Issuer").Value;
             JSONWebTokens.Audience = configuration.GetSection("JWT").GetSection("Audience").Value;
             JSONWebTokens.PrivateKeyXmlString = configuration.GetSection("JWT").GetSection("PrivateKeyXmlString").Value;

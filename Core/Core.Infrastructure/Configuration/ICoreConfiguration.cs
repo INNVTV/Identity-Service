@@ -56,6 +56,7 @@ namespace Core.Infrastructure.Configuration
         public string Issuer { get; set; }
         public string Audience { get; set; }
 
+        public string RefreshTokenEncryptionPassPhrase { get; set; }
         public string PrivateKeyXmlString { get; set; }
         public string PublicKeyXmlString { get; set; }
         public string PublicKeyPEM { get; set; }

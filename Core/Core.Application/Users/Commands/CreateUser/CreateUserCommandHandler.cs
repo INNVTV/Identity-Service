@@ -53,7 +53,7 @@ namespace Core.Application.Users.Commands.CreateUser
             //=========================================================================
 
             // Generate salt and hash from password
-            var passwordHashResults = Common.Hashing.PasswordHashing.HashPassword(request.Password);
+            var passwordHashResults = Common.Encryption.PasswordHashing.HashPassword(request.Password);
 
             var userDocumentModel = new UserDocumentModel(request.FirstName, request.LastName, request.UserName, request.Email, request.Roles, passwordHashResults.Salt, passwordHashResults.Hash);
 
