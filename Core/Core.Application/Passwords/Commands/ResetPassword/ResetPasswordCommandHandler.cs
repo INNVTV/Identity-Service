@@ -110,7 +110,7 @@ namespace Core.Application.Passwords.Commands.ResetPassword
 
 
             // Generate salt and hash from new password
-            var passwordHashResults = Common.Hashing.PasswordHashing.HashPassword(request.NewPassword);
+            var passwordHashResults = Common.Encryption.PasswordHashing.HashPassword(request.NewPassword);
 
             userDocumentModel.PasswordSalt = passwordHashResults.Salt;
             userDocumentModel.PasswordHash = passwordHashResults.Hash;

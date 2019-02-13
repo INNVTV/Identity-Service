@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Core.Common.Hashing
+namespace Core.Common.Encryption
 {
+    /// <summary>
+    /// One way hashing that can only be used to COMPARE for passwords
+    /// </summary>
     public static class PasswordHashing
     {
         public static PasswordHashResult HashPassword(string password)

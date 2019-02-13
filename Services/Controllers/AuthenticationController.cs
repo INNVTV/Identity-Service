@@ -14,7 +14,7 @@ using Core.Application.Authentication.Commands.AuthenticateRefreshToken;
 
 namespace IdentityService.Controllers
 {
-    [Route("api")]
+    [Route("api/authentication")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace IdentityService.Controllers
             _coreConfiguration = coreConfiguration;
         }
 
-        [Route("authenticate")]
+        [Route("user")]
         [HttpPost]
         public async Task<AuthenticationResponse> Post(AuthenticateUserCommand authenticateUserCommand)
         {
@@ -35,7 +35,7 @@ namespace IdentityService.Controllers
             return result;
         }
 
-        [Route("authenticate/refresh")]
+        [Route("refresh")]
         [HttpPost]
         public async Task<AuthenticationResponse> Post(AuthenticateRefreshTokenCommand authenticateRefreshTokenCommand)
         {
@@ -43,16 +43,6 @@ namespace IdentityService.Controllers
             return result;
         }
 
-        [Route("public/keys")]
-        [HttpGet]
-        public PublicRsaKeysServiceModel Get()
-        {
-            var response = new PublicRsaKeysServiceModel{
-                XMLString = _coreConfiguration.JSONWebTokens.PublicKeyXmlString,
-                PEM = _coreConfiguration.JSONWebTokens.PublicKeyPEM
-            };
-
-            return response;
-        }
+        
     }
 }

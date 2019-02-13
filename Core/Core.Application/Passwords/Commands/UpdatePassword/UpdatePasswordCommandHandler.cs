@@ -98,7 +98,7 @@ namespace Core.Application.Passwords.Commands.UpdatePassword
             //=========================================================================
             // DETERMINE IF THE PASSWORD IS CORRECT
             //=========================================================================
-            var authenticationGranted = Common.Hashing.PasswordHashing.ValidatePassword(request.OldPassword, userDocumentModel.PasswordHash, userDocumentModel.PasswordSalt);
+            var authenticationGranted = Common.Encryption.PasswordHashing.ValidatePassword(request.OldPassword, userDocumentModel.PasswordHash, userDocumentModel.PasswordSalt);
 
             if(!authenticationGranted)
             {
@@ -107,7 +107,7 @@ namespace Core.Application.Passwords.Commands.UpdatePassword
 
 
             // Generate salt and hash from new password
-            var passwordHashResults = Common.Hashing.PasswordHashing.HashPassword(request.NewPassword);
+            var passwordHashResults = Common.Encryption.PasswordHashing.HashPassword(request.NewPassword);
 
             userDocumentModel.PasswordSalt = passwordHashResults.Salt;
             userDocumentModel.PasswordHash = passwordHashResults.Hash;
