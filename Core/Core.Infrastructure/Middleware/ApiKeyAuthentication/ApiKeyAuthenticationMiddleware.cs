@@ -36,7 +36,7 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
             if (context.Request.Path.HasValue)
             {
                 // We only require api keys and secure calls on our API endpoints
-                if(context.Request.Path.Value.StartsWith("/api"))
+                if(context.Request.Path.Value.ToLower().StartsWith("/api"))
                 {
                     
                     if(_forceSecureApiCalls && !context.Request.IsHttps)
@@ -46,9 +46,9 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
                     }
 
                     // We allow authentication, refresh token and public requests to pass through
-                    if(    context.Request.Path.Value.StartsWith("/api/authenticate")
-                        || context.Request.Path.Value.StartsWith("/api/authentication")
-                        || context.Request.Path.Value.StartsWith("/api/public"))
+                    if(    context.Request.Path.Value.ToLower().StartsWith("/api/authenticate")
+                        || context.Request.Path.Value.ToLower().StartsWith("/api/authentication")
+                        || context.Request.Path.Value.ToLower().StartsWith("/api/public"))
                     {
                         validKey = true;
                     }
