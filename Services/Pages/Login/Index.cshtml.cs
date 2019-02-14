@@ -74,7 +74,7 @@ namespace IdentityService.Pages.Login
             Response.Cookies.Append(
               refreshTokenCookieName,
               // Encrypted Token
-              // Note: You will need to use: System.Web.HttpUtility.UrlDecode(strToDecode) when reading back in
+              // Note: You will need to use: System.Web.HttpUtility.HtmlDecode(strToDecode) when reading back in
               Core.Common.Encryption.StringEncryption.EncryptString(
                   result.RefreshToken, _coreConfiguration.JSONWebTokens.RefreshTokenEncryptionPassPhrase
                   ),
