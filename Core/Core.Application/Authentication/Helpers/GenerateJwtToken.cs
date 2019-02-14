@@ -27,8 +27,10 @@ namespace Core.Application.Authentication.Helpers
                     new Claim("userName", userName),
                     new Claim("nameKey", nameKey),
                     new Claim("email", email),
+                    new Claim("emailAddress", email),
                     new Claim("firstName", firstName),
                     new Claim("lastName", lastName),
+                    new Claim("fullName", $"{firstName} {lastName}"),
                 };
 
             // Add roles to the claim
