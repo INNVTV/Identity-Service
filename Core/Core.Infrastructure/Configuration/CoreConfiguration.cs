@@ -18,6 +18,7 @@ namespace Core.Infrastructure.Configuration
             Security = new SecuritySettings();
             Hosting = new HostingConfiguration();
             JSONWebTokens = new JWTConfiguration();
+            Cookies = new Cookies();
             Endpoints = new EndpointSettings();
             Invitations = new InvitationSettings();
             Logins = new LoginSettings(); 
@@ -29,7 +30,10 @@ namespace Core.Infrastructure.Configuration
             Security.SecondaryApiKey = configuration.GetSection("Security").GetSection("SecondaryApiKey").Value;
             Security.ForceSecureApiCalls = Boolean.Parse(configuration.GetSection("Security").GetSection("ForceSecureApiCalls").Value);
 
-            JSONWebTokens.CookieExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("CookieExpirationHours").Value);
+            Cookies.CookieExpirationHours = Convert.ToInt32(configuration.GetSection("Cookies").GetSection("CookieExpirationHours").Value);
+            Cookies.JwtCookieName = configuration.GetSection("Cookies").GetSection("JwtCookieName").Value;
+            Cookies.RefreshTokenCookieName = configuration.GetSection("Cookies").GetSection("RefreshTokenCookieName").Value;
+
             JSONWebTokens.TokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("TokenExpirationHours").Value);
             JSONWebTokens.RefreshTokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("RefreshTokenExpirationHours").Value);
             JSONWebTokens.RefreshTokenEncryptionPassPhrase = configuration.GetSection("JWT").GetSection("RefreshTokenEncryptionPassPhrase").Value;
@@ -71,6 +75,7 @@ namespace Core.Infrastructure.Configuration
         public SecuritySettings Security { get; set; }
         public HostingConfiguration Hosting { get; set; }
         public JWTConfiguration JSONWebTokens { get; set; }
+        public Cookies Cookies { get; set; }
         public EndpointSettings Endpoints { get; set; }
         public InvitationSettings Invitations { get; set; }
         public LoginSettings Logins { get; set; }

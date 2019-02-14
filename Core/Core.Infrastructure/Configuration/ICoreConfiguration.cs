@@ -10,6 +10,7 @@ namespace Core.Infrastructure.Configuration
         ApplicationSettings Application { get; set; }
         SecuritySettings Security { get; set; }
         JWTConfiguration JSONWebTokens { get; set; }
+        Cookies Cookies { get; set; }
 
         EndpointSettings Endpoints { get; set; }
         InvitationSettings Invitations { get; set; }
@@ -45,11 +46,23 @@ namespace Core.Infrastructure.Configuration
 
     #endregion
 
+    #region Cookies
+
+    public class Cookies
+    {
+        public int CookieExpirationHours { get; set; }
+        public string JwtCookieName { get; set; }
+        public string RefreshTokenCookieName { get; set; }
+
+    }
+
+
+    #endregion
+
     #region JSONWebTokens
 
     public class JWTConfiguration
     {
-        public int CookieExpirationHours { get; set; }
         public int TokenExpirationHours { get; set; }
         public int RefreshTokenExpirationHours { get; set; }
 
