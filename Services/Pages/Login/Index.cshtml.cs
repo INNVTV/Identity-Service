@@ -41,22 +41,28 @@ namespace IdentityService.Pages.Login
                 ViewData["Message"] = result.Message;
                 return Page();
             }
-           
+
             // CROSS DOMAIN COOKIE NOTES AND LOCAL DEBUGGING ----------------
             // You will need to be on the same domain to use this cookie on the application requiring authentication
             // To ease with local development it is recommended that you use the API endpoint to authenticate users from the application requring authentication.
             // This will require building out your own version of the login UI in your web or mobile app
             // You can still use the password reset, invitiation acceptance, and other UIs in this web app.
 
+            var jwtCookieName = _coreConfiguration.Cookies.JwtCookieName;
+            var refreshTokenCookieName = _coreConfiguration.Cookies.RefreshTokenCookieName;
+
+            Response.Cookies.Delete(jwtCookieName);
+            Response.Cookies.Delete(refreshTokenCookieName);
+
             Response.Cookies.Append(
-              "jwtToken",
+              jwtCookieName,
               result.JwtToken,
               new CookieOptions()
               {
                   IsEssential = true,
                   HttpOnly = true,
                   Secure = true,
-                  Expires = DateTime.UtcNow.AddHours(_coreConfiguration.JSONWebTokens.CookieExpirationHours),
+                  Expires = DateTime.UtcNow.AddHours(_coreConfiguration.Cookies.CookieExpirationHours),
                   SameSite = SameSiteMode.Strict
               });
 
@@ -66,7 +72,7 @@ namespace IdentityService.Pages.Login
             // In a desktop/native app they should be stored encrypted until ready for use.
 
             Response.Cookies.Append(
-              "refreshToken",
+              refreshTokenCookieName,
               // Encrypted Token
               Core.Common.Encryption.StringEncryption.EncryptString(
                   result.RefreshToken, _coreConfiguration.JSONWebTokens.RefreshTokenEncryptionPassPhrase
@@ -76,7 +82,7 @@ namespace IdentityService.Pages.Login
                   IsEssential = true,
                   HttpOnly = true,
                   Secure = true,
-                  Expires = DateTime.UtcNow.AddHours(_coreConfiguration.JSONWebTokens.CookieExpirationHours),
+                  Expires = DateTime.UtcNow.AddHours(_coreConfiguration.Cookies.CookieExpirationHours),
                   SameSite = SameSiteMode.Strict
               });
               
