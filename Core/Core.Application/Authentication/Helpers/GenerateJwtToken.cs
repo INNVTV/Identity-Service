@@ -45,7 +45,7 @@ namespace Core.Application.Authentication.Helpers
                 coreConfiguration.JSONWebTokens.Issuer,
                 coreConfiguration.JSONWebTokens.Audience,
                 new ClaimsIdentity(claims),
-                DateTime.UtcNow,
+                DateTime.UtcNow.AddMinutes(-5), //<-- We give a 5 minute buffer in case clocks on associated servers are off so that issues with validation do not occur due to millisecond of difference.
                 DateTime.UtcNow.AddHours(coreConfiguration.JSONWebTokens.TokenExpirationHours),
                 DateTime.UtcNow,
                 signingCredentials
