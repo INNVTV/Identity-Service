@@ -45,10 +45,12 @@ namespace Core.Infrastructure.Middleware.ApiKeyAuthentication
                         await context.Response.WriteAsync("Please only connect via HTTPS");
                     }
 
-                    // We allow authentication, refresh token and public requests to pass through
+                    // We allow authentication, refresh token and certain public requests to pass through
                     if(    context.Request.Path.Value.ToLower().StartsWith("/api/authenticate")
                         || context.Request.Path.Value.ToLower().StartsWith("/api/authentication")
-                        || context.Request.Path.Value.ToLower().StartsWith("/api/public"))
+                        || context.Request.Path.Value.ToLower().StartsWith("/api/public")
+                        || context.Request.Path.Value.ToLower().StartsWith("/api/invitations")
+                        || context.Request.Path.Value.ToLower().StartsWith("/api/password"))
                     {
                         validKey = true;
                     }

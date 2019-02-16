@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core.Application.Invitations.Commands.DeleteInvitation;
 using Core.Application.Invitations.Commands.InviteUser;
 using Core.Application.Invitations.Models;
 using Core.Application.Invitations.Queries.GetExpiredInvitations;
+using Core.Application.Invitations.Queries.GetInvitationById;
 using Core.Common.Response;
+using Core.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +38,14 @@ namespace IdentityService.Controllers
             return result;
         }
 
+        [Route("id/{id}")]
+        [HttpGet]
+        public async Task<Invitation> GetById(string id)
+        {
+            var result = await _mediator.Send(new GetInvitationByIdQuery { Id = id });
+            return result;
+        }
+
         [Route("expired")]
         [HttpGet]
         public async Task<ExpiredInvitationsModel> List(int pageSize = 20, string continuationToken = null)
@@ -42,6 +53,14 @@ namespace IdentityService.Controllers
             var expiredInvitationsQuery = new GetExpiredInvitationsQuery { PageSize = pageSize, ContinuationToken = continuationToken };
             var result = await _mediator.Send(expiredInvitationsQuery);
             return result;
+        }
+
+        [Route("delete")]
+        [HttpDelete]
+        public async Task<BaseResponse> Delete(string id)
+        {
+            var deleteCommand = new DeleteInvitationCommand() { Id = id };
+            return await _mediator.Send(deleteCommand);
         }
     }
 }

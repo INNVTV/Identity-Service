@@ -18,7 +18,6 @@ namespace Core.Infrastructure.Configuration
             Security = new SecuritySettings();
             Hosting = new HostingConfiguration();
             JSONWebTokens = new JWTConfiguration();
-            Cookies = new Cookies();
             Endpoints = new EndpointSettings();
             Invitations = new InvitationSettings();
             Logins = new LoginSettings(); 
@@ -30,9 +29,6 @@ namespace Core.Infrastructure.Configuration
             Security.SecondaryApiKey = configuration.GetSection("Security").GetSection("SecondaryApiKey").Value;
             Security.ForceSecureApiCalls = Boolean.Parse(configuration.GetSection("Security").GetSection("ForceSecureApiCalls").Value);
 
-            Cookies.CookieExpirationHours = Convert.ToInt32(configuration.GetSection("Cookies").GetSection("CookieExpirationHours").Value);
-            Cookies.JwtCookieName = configuration.GetSection("Cookies").GetSection("JwtCookieName").Value;
-            Cookies.RefreshTokenCookieName = configuration.GetSection("Cookies").GetSection("RefreshTokenCookieName").Value;
 
             JSONWebTokens.TokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("TokenExpirationHours").Value);
             JSONWebTokens.RefreshTokenExpirationHours = Convert.ToInt32(configuration.GetSection("JWT").GetSection("RefreshTokenExpirationHours").Value);
@@ -44,7 +40,9 @@ namespace Core.Infrastructure.Configuration
             JSONWebTokens.PublicKeyXmlString = configuration.GetSection("JWT").GetSection("PublicKeyXmlString").Value;
             JSONWebTokens.PublicKeyPEM = configuration.GetSection("JWT").GetSection("PublicKeyPEM").Value;
 
-            Endpoints.Domain = configuration.GetSection("Endpoints").GetSection("Domain").Value;
+            Endpoints.ClientDomain = configuration.GetSection("Endpoints").GetSection("ClientDomain").Value;
+            Endpoints.AcceptInvitationsPath = configuration.GetSection("Endpoints").GetSection("AcceptInvitationsPath").Value;
+            Endpoints.PasswordResetPath = configuration.GetSection("Endpoints").GetSection("PasswordResetPath").Value;
 
             Invitations.ExpirationDays = Convert.ToInt32(configuration.GetSection("Invitations").GetSection("ExpirationDays").Value);
 
@@ -75,7 +73,6 @@ namespace Core.Infrastructure.Configuration
         public SecuritySettings Security { get; set; }
         public HostingConfiguration Hosting { get; set; }
         public JWTConfiguration JSONWebTokens { get; set; }
-        public Cookies Cookies { get; set; }
         public EndpointSettings Endpoints { get; set; }
         public InvitationSettings Invitations { get; set; }
         public LoginSettings Logins { get; set; }

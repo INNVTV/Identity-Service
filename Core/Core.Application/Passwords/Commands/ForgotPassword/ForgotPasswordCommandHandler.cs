@@ -67,7 +67,7 @@ namespace Core.Application.Passwords.Commands.ForgotPassword
                     // SEND EMAIL 
                     //=========================================================================
 
-                    var resetLink = String.Concat(_coreConfiguration.Endpoints.Domain, "/password/reset/", passwordResetCode);
+                    var resetLink = String.Concat(_coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.PasswordResetPath, passwordResetCode);
 
                     var emailMessage = new EmailMessage
                     {
@@ -103,7 +103,7 @@ namespace Core.Application.Passwords.Commands.ForgotPassword
 
             // NOTE: We return the same response regardless of finding a user or not.
             // This prevents anyone from checking to see if a username or email is in the system
-            return new BaseResponse { isSuccess = true, Message = "Thank you. If this is a valid account reset instructions have been sent to the email address on file" };
+            return new BaseResponse { isSuccess = true, Message = "Thank you. Reset instructions have been sent to the email address on file" };
         }
     }
 }
