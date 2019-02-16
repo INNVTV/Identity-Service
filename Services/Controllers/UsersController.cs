@@ -25,6 +25,7 @@ using Core.Application.Users.Queries.GetUserById;
 using Core.Application.Passwords.Commands.UpdatePassword;
 using Microsoft.AspNetCore.Authorization;
 using Core.Domain.Entities;
+using Core.Application.Users.Commands.UpdateFullName;
 
 namespace IdentityService.Controllers
 {
@@ -94,7 +95,7 @@ namespace IdentityService.Controllers
 
         [Route("email/{email}")]
         [HttpGet]
-        public async Task<User> Byemail(string email)
+        public async Task<User> ByEmail(string email)
         {
             var getUserByEmailQuery = new GetUserByEmailQuery() { Email = email };
             return await _mediator.Send(getUserByEmailQuery);
@@ -121,6 +122,14 @@ namespace IdentityService.Controllers
         public async Task<BaseResponse> UpdateEmail(UpdateEmailCommand updateEmailCommand)
         {
             var result = await _mediator.Send(updateEmailCommand);
+            return result;
+        }
+
+        [Route("update/fullName")]
+        [HttpPut]
+        public async Task<BaseResponse> UpdateFullName(UpdateFullNameCommand updateFullNameCommand)
+        {
+            var result = await _mediator.Send(updateFullNameCommand);
             return result;
         }
 

@@ -51,7 +51,7 @@ namespace Core.Application.Passwords.Commands.UpdatePassword
 
 
             // Create the query
-            string sqlQuery = "SELECT * FROM Documents d WHERE d.id ='" + request.UserId + "'";
+            string sqlQuery = "SELECT * FROM Documents d WHERE d.id ='" + request.Id + "'";
 
             var sqlSpec = new SqlQuerySpec { QueryText = sqlQuery };
 

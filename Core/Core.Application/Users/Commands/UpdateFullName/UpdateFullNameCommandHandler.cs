@@ -1,9 +1,7 @@
-﻿using Core.Application.Users.Commands.CreateUser;
-using Core.Application.Users.Models.Documents;
+﻿using Core.Application.Users.Models.Documents;
 using Core.Common.Response;
 using Core.Infrastructure.Configuration;
 using Core.Infrastructure.Persistence.DocumentDatabase;
-using Core.Infrastructure.Services.Email;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Azure.Documents;
@@ -16,23 +14,23 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Core.Application.Users.Commands.UpdateUserName
+namespace Core.Application.Users.Commands.UpdateFullName
 {
-    public class UpdateUserNameCommandHandler : IRequestHandler<UpdateUserNameCommand, BaseResponse>
+    public class UpdateFullNameCommandHandler : IRequestHandler<UpdateFullNameCommand, BaseResponse>
     {
         //MediatR will automatically inject dependencies
         private readonly IMediator _mediator;
         private readonly ICoreConfiguration _coreConfiguration;
         private readonly IDocumentContext _documentContext;
 
-        public UpdateUserNameCommandHandler(IMediator mediator, IDocumentContext documentContext, ICoreConfiguration coreConfiguration)
+        public UpdateFullNameCommandHandler(IMediator mediator, IDocumentContext documentContext, ICoreConfiguration coreConfiguration)
         {
             _mediator = mediator;
             _coreConfiguration = coreConfiguration;
             _documentContext = documentContext;
         }
 
-        public async Task<BaseResponse> Handle(UpdateUserNameCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpdateFullNameCommand request, CancellationToken cancellationToken)
         {
             //=========================================================================
             // VALIDATE OUR COMMAND REQUEST USING FLUENT VALIDATION 
@@ -40,7 +38,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
             // I prefer using manual/granular validation within each command. 
             //=========================================================================
 
-            UpdateUserNameValidator validator = new UpdateUserNameValidator(_mediator); //, _coreConfiguration);
+            UpdateFullNameValidator validator = new UpdateFullNameValidator();
             ValidationResult validationResult = validator.Validate(request);
             if (!validationResult.IsValid)
             {
@@ -53,7 +51,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
 
             // Generate collection uri
             Uri collectionUri = UriFactory.CreateDocumentCollectionUri(
-                _documentContext.Settings.Database, 
+                _documentContext.Settings.Database,
                 _documentContext.Settings.Collection);
 
 
@@ -93,7 +91,8 @@ namespace Core.Application.Users.Commands.UpdateUserName
             //=========================================================================
             // UPDATE the USER DOCUMENT MODEL
             //=========================================================================
-            var oldUserName = String.Empty; // For logging
+            var oldFullName = String.Empty; // For logging
+            var newFullName = String.Empty; // For logging
 
             if (userDocumentModel == null)
             {
@@ -101,20 +100,21 @@ namespace Core.Application.Users.Commands.UpdateUserName
             }
             else
             {
-                oldUserName = userDocumentModel.UserName;
+                oldFullName = $"{userDocumentModel.FirstName} {userDocumentModel.LastName}";
+                newFullName = $"{request.NewFirstName} {request.NewLastName}";
 
-                userDocumentModel.UserName = request.NewUserName;
-                userDocumentModel.NameKey = Common.Transformations.NameKey.Transform(request.NewUserName);
+                userDocumentModel.FirstName = request.NewFirstName;
+                userDocumentModel.LastName = request.NewLastName;
             }
 
-            
+
             var documentUri = UriFactory.CreateDocumentUri(
                 _documentContext.Settings.Database,
                 _documentContext.Settings.Collection,
                 userDocumentModel.Id);
 
             ResourceResponse<Document> result;
-            
+
 
             try
             {
@@ -148,7 +148,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
                 // LOG ACTIVITY
                 //=========================================================================
                 var user = AutoMapper.Mapper.Map<Core.Domain.Entities.User>(userDocumentModel);
-                Log.Information("UserName updated from {oldName} to {newName} {@user}", oldUserName, request.NewUserName, user);
+                Log.Information("FullName updated from {oldName} to {newName} {@user}", oldFullName, newFullName, user);
 
                 //==========================================================================
                 // POST COMMAND CHECKLIST 
@@ -157,7 +157,7 @@ namespace Core.Application.Users.Commands.UpdateUserName
                 // 2. SEARCH INDEX: Update Search index or send indexer request.
                 //-----------------------------------------------------------------------
 
-                return new BaseResponse { isSuccess = true, Message = "UserName updated" };
+                return new BaseResponse { isSuccess = true, Message = "FullName updated" };
             }
             else
             {
