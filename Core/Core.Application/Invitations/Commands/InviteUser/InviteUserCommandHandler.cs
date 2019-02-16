@@ -92,7 +92,7 @@ namespace Core.Application.Invitations.Commands.InviteUser
                 // SEND EMAIL 
                 //=========================================================================
                 // Send an email to the new user using the IEmailService dependency
-                var invitationLink = String.Concat(_coreConfiguration.Endpoints.Domain, "/invitations/accept/", invitationDocumentModel.Id);
+                var invitationLink = String.Concat(_coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.AcceptInvitationsPath, invitationDocumentModel.Id);
 
                 var emailMessage = new EmailMessage
                 {

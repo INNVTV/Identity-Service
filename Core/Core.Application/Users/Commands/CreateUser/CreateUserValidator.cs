@@ -36,50 +36,55 @@ namespace Core.Application.Users.Commands.CreateUser
                 .WithMessage(x => $"Email '{x.Email}' already exists");
 
             // UserName
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Please include a UserName");
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("Please include a Username");
 
             RuleFor(x => x.UserName)
                 .Length(Common.Constants.Users.minUserNameLength, Common.Constants.Users.maxUserNameLength)
                 .When(x => !String.IsNullOrEmpty(x.UserName))
-                .WithMessage($"UserName must be bewtween {Common.Constants.Users.minUserNameLength}-{Common.Constants.Users.maxUserNameLength} characters in length");
+                .WithMessage($"Username must be bewtween {Common.Constants.Users.minUserNameLength}-{Common.Constants.Users.maxUserNameLength} characters in length");
 
             RuleFor(x => x.UserName)
                 .Must(BeAValidUserName)
                 .When(x => !String.IsNullOrEmpty(x.UserName))
-                .WithMessage(x => $"{x.UserName} is a reserved UserName");
+                .WithMessage(x => $"{x.UserName} is a reserved Username");
 
             RuleFor(x => x.UserName)
                 .Must(UserNameNotExist)
                 .When(x => !String.IsNullOrEmpty(x.UserName))
-                .WithMessage(x => $"UserName '{x.UserName}' already exists");
+                .WithMessage(x => $"Username '{x.UserName}' already exists");
+
+            RuleFor(x => x.UserName)
+                .Must(Common.Validation.Methods.NotIncludeSpacesOrSpecialCharacters)
+                .When(x => !String.IsNullOrEmpty(x.UserName))
+                .WithMessage(x => "Username cannot include spaces or special characters");
 
 
             // First Name
-            RuleFor(x => x.FirstName).NotEmpty().WithMessage("Please include a FirstName");
+            RuleFor(x => x.FirstName).NotEmpty().WithMessage("Please include a first name");
 
             RuleFor(x => x.FirstName)
                 .Length(Common.Constants.Users.minFirstNameLength, Common.Constants.Users.maxFirstNameLength)
                 .When(x => !String.IsNullOrEmpty(x.FirstName))
-                .WithMessage($"FirstName must be bewtween {Common.Constants.Users.minFirstNameLength}-{Common.Constants.Users.maxFirstNameLength} characters in length");
+                .WithMessage($"First name must be bewtween {Common.Constants.Users.minFirstNameLength}-{Common.Constants.Users.maxFirstNameLength} characters in length");
 
 
             RuleFor(x => x.FirstName)
-                .Must(Common.Validation.Methods.NotIncludeSpecialCharacters)
+                .Must(Common.Validation.Methods.NotIncludeNumbersSpacesOrSpecialCharacters)
                 .When(x => !String.IsNullOrEmpty(x.FirstName))
-                .WithMessage(x => "FirstName cannot include special characters");
+                .WithMessage(x => "First name cannot include numbers, spaces or special characters");
 
             // Last Name
-            RuleFor(x => x.LastName).NotEmpty().WithMessage("Please include a LastName");
+            RuleFor(x => x.LastName).NotEmpty().WithMessage("Please include a last name");
 
             RuleFor(x => x.LastName)
                 .Length(Common.Constants.Users.minLastNameLength, Common.Constants.Users.maxLastNameLength)
                 .When(x => !String.IsNullOrEmpty(x.LastName))
-                .WithMessage($"LastName must be bewtween {Common.Constants.Users.minLastNameLength}-{Common.Constants.Users.maxLastNameLength} characters in length");
+                .WithMessage($"Last name must be bewtween {Common.Constants.Users.minLastNameLength}-{Common.Constants.Users.maxLastNameLength} characters in length");
 
             RuleFor(x => x.LastName)
-                .Must(Common.Validation.Methods.NotIncludeSpecialCharacters)
+                .Must(Common.Validation.Methods.NotIncludeNumbersSpacesOrSpecialCharacters)
                 .When(x => !String.IsNullOrEmpty(x.LastName))
-                .WithMessage(x => "LastName cannot include special characters");
+                .WithMessage(x => "Last name cannot include  numbers, spaces or special characters");
 
             // Password
             RuleFor(x => x.Password).NotEmpty().WithMessage("Please include a password");
