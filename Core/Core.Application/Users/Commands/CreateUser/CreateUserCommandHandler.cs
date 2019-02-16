@@ -107,9 +107,9 @@ namespace Core.Application.Users.Commands.CreateUser
                 {
                     ToEmail = request.Email,
                     ToName = String.Concat(request.FirstName, " ", request.LastName),
-                    Subject = "User created",
-                    TextContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), "! your user identity has been created!"),
-                    HtmlContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), ",<br>Your user identity has been created!")
+                    Subject = "Welcome!",
+                    TextContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), "! you now have access to ", _coreConfiguration.Application.Name, ". You can login here: ", _coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.LoginPath),
+                    HtmlContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), ",<br><br>you now have access to ", _coreConfiguration.Application.Name, ".<br><br>You can login <a href='", _coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.LoginPath, "'>here</a>")
                 };
 
                 try
