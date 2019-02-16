@@ -32,7 +32,7 @@ namespace Core.Application.Users.Commands.UpdateFullName
                 .WithMessage($"Last name must be bewtween {Common.Constants.Users.minLastNameLength}-{Common.Constants.Users.maxLastNameLength} characters in length");
 
             RuleFor(x => x.NewLastName)
-                .Must(Common.Validation.Methods.NotIncludeNumbersSPacesOrSpecialCharacters)
+                .Must(Common.Validation.Methods.NotIncludeNumbersSpacesOrSpecialCharacters)
                 .When(x => !String.IsNullOrEmpty(x.NewLastName))
                 .WithMessage(x => "Last name cannot include numbers, spaces or special characters");
         }
