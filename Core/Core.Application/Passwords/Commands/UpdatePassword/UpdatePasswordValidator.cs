@@ -11,7 +11,7 @@ namespace Core.Application.Passwords.Commands.UpdatePassword
         {
 
             // User Id
-            RuleFor(x => x.UserId).NotEmpty().WithMessage("Please include a user id");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Please include a user id");
 
             // Old Password
             RuleFor(x => x.OldPassword).NotEmpty().WithMessage("Please include old password");
