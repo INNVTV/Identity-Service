@@ -77,6 +77,7 @@ namespace Core.Infrastructure.Configuration
     public class EndpointSettings
     {
         public string ClientDomain { get; set; }
+        public string LoginPath { get; set; }
         public string PasswordResetPath { get; set; }
         public string AcceptInvitationsPath { get; set; }
     }

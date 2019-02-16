@@ -41,6 +41,7 @@ namespace Core.Infrastructure.Configuration
             JSONWebTokens.PublicKeyPEM = configuration.GetSection("JWT").GetSection("PublicKeyPEM").Value;
 
             Endpoints.ClientDomain = configuration.GetSection("Endpoints").GetSection("ClientDomain").Value;
+            Endpoints.LoginPath = configuration.GetSection("Endpoints").GetSection("LoginPath").Value;
             Endpoints.AcceptInvitationsPath = configuration.GetSection("Endpoints").GetSection("AcceptInvitationsPath").Value;
             Endpoints.PasswordResetPath = configuration.GetSection("Endpoints").GetSection("PasswordResetPath").Value;
 
