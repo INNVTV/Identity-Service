@@ -16,7 +16,6 @@ namespace Core.Infrastructure.Services.Email
     {
         public string FromEmail { get; set; }
         public string FromName { get; set; }
-        public string ImagesUrl { get; set; }
         public string Key { get; set; }
     }
 

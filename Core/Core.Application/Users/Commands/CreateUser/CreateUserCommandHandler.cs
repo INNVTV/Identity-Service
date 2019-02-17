@@ -97,19 +97,22 @@ namespace Core.Application.Users.Commands.CreateUser
 
             if (result.StatusCode == System.Net.HttpStatusCode.Created)
             {
-                
+
 
                 //=========================================================================
                 // SEND EMAIL 
                 //=========================================================================
                 // Send an email to the new user using the IEmailService dependency
+
+                var loginLink = String.Concat(_coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.LoginPath);
+
                 var emailMessage = new EmailMessage
                 {
                     ToEmail = request.Email,
                     ToName = String.Concat(request.FirstName, " ", request.LastName),
                     Subject = "Welcome!",
-                    TextContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), "! you now have access to ", _coreConfiguration.Application.Name, ". You can login here: ", _coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.LoginPath),
-                    HtmlContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), ",<br><br>you now have access to ", _coreConfiguration.Application.Name, ".<br><br>You can login <a href='", _coreConfiguration.Endpoints.ClientDomain, _coreConfiguration.Endpoints.LoginPath, "'>here</a>")
+                    TextContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), "! you now have access to ", _coreConfiguration.Application.Name, ". You can login here: ", loginLink),
+                    HtmlContent = String.Concat("Thank you ", String.Concat(request.FirstName, " ", request.LastName), ",<br><br>you now have access to ", _coreConfiguration.Application.Name, ".<br><br>Please login using the link below:.<br/><br/>" + Common.Emails.EmailButtonGenerator.Generate(loginLink, "Sign in", 80)),
                 };
 
                 try
