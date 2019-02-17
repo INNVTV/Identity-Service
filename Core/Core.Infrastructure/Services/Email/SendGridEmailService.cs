@@ -28,6 +28,11 @@ namespace Core.Infrastructure.Services.Email
             Settings.FromName = configuration
                 .GetSection("Email")
                 .GetSection("FromName").Value;
+
+            Settings.ImagesUrl = configuration
+                .GetSection("Email")
+                .GetSection("ImagesUrl").Value;
+
         }
 
         public async Task<bool> SendEmail(IEmailMessage emailMessage)
