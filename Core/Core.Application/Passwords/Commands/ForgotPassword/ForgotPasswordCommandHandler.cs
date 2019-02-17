@@ -75,7 +75,7 @@ namespace Core.Application.Passwords.Commands.ForgotPassword
                         ToName = String.Concat(user.FirstName, " ", user.LastName),
                         Subject = "Password Reset",
                         TextContent = String.Concat("Hello ", String.Concat(user.FirstName, " ", user.LastName), ". A password reset request has been made on your account. If you made this request please reset your password by following the instructions at this link: ", resetLink),
-                        HtmlContent = String.Concat("Hello ", String.Concat(user.FirstName, " ", user.LastName), ",<br/><br/> A password reset request has been made on your account. If you made this request please reset your password by following the instructions <a href='", resetLink, "'>here</a>"),
+                        HtmlContent = String.Concat("Hello ", String.Concat(user.FirstName, " ", user.LastName), ",<br/><br/> A password reset request has been made on your account. If you made this request please reset your password by following the instructions at the link below.<br/><br/> " + Common.Emails.EmailButtonGenerator.Generate(resetLink, "Reset Password", 140)),
                     };
 
                     try
