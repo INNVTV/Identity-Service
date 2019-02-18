@@ -9,5 +9,7 @@ namespace IdentityService.ServiceModels
     {
         public string XMLString { get; set; }
         public string PEM { get; set; }
+        public string Modulus { get; set; }
+        public string Exponent { get; set; }
     }
 }
