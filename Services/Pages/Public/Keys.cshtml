@@ -4,12 +4,12 @@
     ViewData["Public Keys"] = "Accept Invitation";
 }
 
-<h2>Public Keys</h2>
+<h2>RSA Public Key</h2>
 
 <br />
 
 <div class="form-group container-fluid">
-    <label>RSA XML String</label>
+    <label>XML String</label>
     <textarea class="form-control" rows="7">@ViewData["XMLString"]</textarea>
 </div>
 
@@ -18,4 +18,18 @@
 <div class="form-group container-fluid">
     <label>PEM</label>
     <textarea class="form-control" rows="7">@ViewData["PEM"]</textarea>
+</div>
+
+<br />
+
+<div class="form-group container-fluid">
+    <label>Modulus</label>
+    <textarea class="form-control" rows="4">@ViewData["Modulus"]</textarea>
+</div>
+
+<br />
+
+<div class="form-group container-fluid">
+    <label>Exponent</label>
+    <textarea class="form-control" rows="1">@ViewData["Exponent"]</textarea>
 </div>
