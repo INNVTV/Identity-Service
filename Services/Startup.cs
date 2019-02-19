@@ -185,7 +185,7 @@ namespace IdentityService
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Identity Service", Version = "v1", Description = $"REST API for { coreConfiguration.Application.Name }" });
+                c.SwaggerDoc("v1", new Info { Title = coreConfiguration.Application.Name, Version = "v1", Description = $"REST API for { coreConfiguration.Application.Name }" });
 
                 
                 // Secure our endpoints with an ApiKey ------------------
